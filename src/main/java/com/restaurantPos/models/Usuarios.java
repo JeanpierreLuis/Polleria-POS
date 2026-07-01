@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 @Entity
 @Table (name = "usuarios")
 @Getter
@@ -12,11 +13,19 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Usuario {
+public class Usuarios {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_usuario")
     private Long idUsuario;
     private String nombre;
+    private String username;
+
+    @Column(name = "password_hash")
     private String password;
-    private String rol;
+
+    private String telefono;
+
+    @Column(name = "id_rol")
+    private Integer rol;
 }

@@ -7,36 +7,21 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane xmlns="http://javafx.com/javafx/21"
-           xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.restaurantPos.controllers.LoginController"
-           styleClass="root">
+<StackPane styleClass="root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurantPos.controllers.LoginController">
 
-    <VBox spacing="18"
-          alignment="CENTER"
-          maxWidth="380"
-          styleClass="login-card">
+    <VBox alignment="CENTER" maxWidth="380" spacing="18" styleClass="login-card">
 
-        <Label text="POS POLLERÍA"
-               styleClass="title"/>
+        <Label styleClass="title" text="POS POLLERÍA" />
 
-        <Label text="Iniciar Sesión"
-               styleClass="subtitle"/>
+        <Label styleClass="subtitle" text="Iniciar Sesión" />
 
-        <TextField fx:id="txtUsuario"
-                   promptText="Usuario"
-                   styleClass="input"/>
+        <TextField fx:id="txtUsuario" promptText="Usuario" styleClass="input" />
 
-        <PasswordField fx:id="txtPassword"
-                       promptText="Contraseña"
-                       styleClass="input"/>
+        <PasswordField fx:id="txtPassword" promptText="Contraseña" styleClass="input" />
 
-        <Button fx:id="btnLogin"
-                text="Ingresar"
-                styleClass="login-button"/>
+        <Button fx:id="btnLogin" onAction="#btnIngresarSistema" styleClass="login-button" text="Ingresar" />
 
-        <Label fx:id="lblMensaje"
-               styleClass="error-label"/>
+        <Label fx:id="lblMensaje" styleClass="error-label" />
 
     </VBox>
 

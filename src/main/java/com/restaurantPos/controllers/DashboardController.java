@@ -2,7 +2,10 @@ package com.restaurantPos.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import org.springframework.stereotype.Component;
 
+
+@Component
 public class DashboardController {
     @FXML
     void btnCaja(ActionEvent event) {
