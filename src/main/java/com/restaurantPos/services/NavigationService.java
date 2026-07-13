@@ -15,12 +15,20 @@ public class NavigationService {
         this.context = context;
     }
 
-    public void changeScene(Stage stage, String fxmlPath) throws Exception{
+    public void changeScene(Stage stage, String fxmlPath, String css) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+
+        loader.setControllerFactory(context::getBean);
 
         Parent root = loader.load();
 
         Scene scene = new Scene(root);
+
+        if(css != null){
+            scene.getStylesheets().add(getClass().getResource(css).toExternalForm()
+
+            );
+        }
 
         stage.setScene(scene);
         stage.centerOnScreen();

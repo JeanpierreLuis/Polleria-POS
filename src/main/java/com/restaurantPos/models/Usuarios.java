@@ -1,10 +1,8 @@
 package com.restaurantPos.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.stereotype.Component;
 
 @Entity
 @Table (name = "usuarios")
@@ -12,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Builder
 public class Usuarios {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +24,7 @@ public class Usuarios {
 
     private String telefono;
 
-    @Column(name = "id_rol")
-    private Integer rol;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_rol")
+    private Roles rol;
 }
