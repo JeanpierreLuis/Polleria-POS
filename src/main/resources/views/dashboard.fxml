@@ -14,17 +14,19 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.restaurantPos.controllers.DashboardController">
 
-    <!-- SIDEBAR -->
     <left>
-        <VBox spacing="15" styleClass="sidebar">
+        <VBox spacing="12" styleClass="sidebar">
 
             <padding>
-                <Insets bottom="20" left="15" right="15" top="20" />
+                <Insets bottom="24" left="18" right="18" top="24" />
             </padding>
 
-            <Label styleClass="logo" text="POLLERÍA POS" />
+            <VBox spacing="2" styleClass="brand">
+                <Label styleClass="logo" text="POLLERÍA POS" />
+                <Label styleClass="logo-subtitle" text="Panel operativo" />
+            </VBox>
 
-            <Button onAction="#btnDashboard" styleClass="menu-button" text="Dashboard" />
+            <Button id="activeMenuButton" onAction="#btnDashboard" styleClass="menu-button" text="Dashboard" />
 
             <Button onAction="#btnPedidos" styleClass="menu-button" text="Pedidos" />
 
@@ -36,62 +38,69 @@
 
             <Button onAction="#btnReportes" styleClass="menu-button" text="Reportes" />
 
+            <Region VBox.vgrow="ALWAYS" />
+
+            <Label styleClass="sidebar-footer" text="Restaurant POS" />
+
         </VBox>
     </left>
 
-    <!-- HEADER -->
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="header">
+        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="header">
 
             <padding>
-                <Insets bottom="15" left="20" right="20" top="15" />
+                <Insets bottom="18" left="28" right="28" top="18" />
             </padding>
 
-            <Label text="Dashboard" />
+            <VBox spacing="2">
+                <Label styleClass="header-title" text="Dashboard" />
+                <Label styleClass="header-subtitle" text="Resumen del día" />
+            </VBox>
 
             <Region HBox.hgrow="ALWAYS" />
 
-            <Label text="Administrador" />
+            <Label styleClass="user-pill" text="Administrador" />
 
         </HBox>
     </top>
 
-    <!-- CONTENIDO -->
     <center>
 
-        <VBox spacing="20">
+        <VBox spacing="26" styleClass="content">
 
             <padding>
-                <Insets bottom="20" left="20" right="20" top="20" />
+                <Insets bottom="28" left="28" right="28" top="28" />
             </padding>
 
-            <!-- CARDS -->
             <HBox spacing="20">
 
                 <VBox styleClass="card">
-                    <Label text="Ventas Hoy" />
-                    <Label text="S/ 1,250.00" />
+                    <Label styleClass="card-title" text="Ventas Hoy" />
+                    <Label styleClass="card-value" text="S/ 1,250.00" />
+                    <Label styleClass="card-caption" text="Caja principal" />
                 </VBox>
 
                 <VBox styleClass="card">
-                    <Label text="Pedidos Pendientes" />
-                    <Label text="15" />
+                    <Label styleClass="card-title" text="Pedidos Pendientes" />
+                    <Label styleClass="card-value" text="15" />
+                    <Label styleClass="card-caption" text="Por atender" />
                 </VBox>
 
                 <VBox styleClass="card">
-                    <Label text="Clientes" />
-                    <Label text="87" />
+                    <Label styleClass="card-title" text="Clientes" />
+                    <Label styleClass="card-value" text="87" />
+                    <Label styleClass="card-caption" text="Registrados" />
                 </VBox>
 
                 <VBox styleClass="card">
-                    <Label text="Productos" />
-                    <Label text="120" />
+                    <Label styleClass="card-title" text="Productos" />
+                    <Label styleClass="card-value" text="120" />
+                    <Label styleClass="card-caption" text="En catálogo" />
                 </VBox>
 
             </HBox>
 
-            <!-- ACCIONES RÁPIDAS -->
-            <Label text="Accesos rápidos" />
+            <Label styleClass="section-title" text="Accesos rápidos" />
 
             <HBox spacing="20">
 

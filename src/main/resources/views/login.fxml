@@ -4,16 +4,23 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <StackPane styleClass="root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurantPos.controllers.LoginController">
 
-    <VBox alignment="CENTER" maxWidth="380" spacing="18" styleClass="login-card">
+    <VBox alignment="CENTER" maxWidth="410" spacing="18" styleClass="login-card">
 
-        <Label styleClass="title" text="POS POLLERÍA" />
+        <VBox alignment="CENTER" spacing="6" styleClass="brand-block">
+            <Label styleClass="brand-mark" text="POS" />
+            <Label styleClass="title" text="POLLERÍA" />
+            <Label styleClass="subtitle" text="Sistema de ventas y pedidos" />
+        </VBox>
 
-        <Label styleClass="subtitle" text="Iniciar Sesión" />
+        <Region prefHeight="6" />
+
+        <Label styleClass="form-title" text="Iniciar sesión" />
 
         <TextField fx:id="txtUsuario" promptText="Usuario" styleClass="input" />
 
