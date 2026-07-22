@@ -23,6 +23,10 @@ public class DetallePedido {
     @JoinColumn(name = "id_producto")
     private Productos producto;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente")
+    private Clientes cliente;
+
     private Integer cantidad;
 
     private Double preciounitario;

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="800.0"
+            prefWidth="1300.0"
+            styleClass="kitchen-root"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.restaurantPos.controllers.KitchenController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16" styleClass="kitchen-header">
+            <padding>
+                <Insets bottom="18" left="24" right="24" top="18" />
+            </padding>
+
+            <VBox spacing="2">
+                <Label styleClass="page-title" text="Pantalla de Cocina" />
+                <Label styleClass="page-subtitle" text="Recepcion y seguimiento de pedidos activos" />
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <Button onAction="#btnActualizarPedidos" styleClass="secondary-button" text="Actualizar" />
+        </HBox>
+    </top>
+
+    <left>
+        <VBox spacing="14" styleClass="kitchen-summary">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+
+            <Label styleClass="section-title" text="Resumen" />
+
+            <VBox styleClass="metric-card">
+                <Label styleClass="metric-label" text="Pendientes" />
+                <Label styleClass="metric-value danger-text" text="6" />
+            </VBox>
+
+            <VBox styleClass="metric-card">
+                <Label styleClass="metric-label" text="En preparacion" />
+                <Label styleClass="metric-value warning-text" text="4" />
+            </VBox>
+
+            <VBox styleClass="metric-card">
+                <Label styleClass="metric-label" text="Listos" />
+                <Label styleClass="metric-value success-text" text="3" />
+            </VBox>
+
+            <Separator />
+
+            <Label styleClass="section-title" text="Prioridad" />
+
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Region styleClass="priority-dot high-priority" />
+                <Label styleClass="hint-label" text="Mayor a 15 min" />
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Region styleClass="priority-dot medium-priority" />
+                <Label styleClass="hint-label" text="Entre 8 y 15 min" />
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Region styleClass="priority-dot normal-priority" />
+                <Label styleClass="hint-label" text="Menor a 8 min" />
+            </HBox>
+        </VBox>
+    </left>
+
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="orders-scroll">
+            <content>
+                <FlowPane fx:id="pedidosContainer" hgap="16" prefWrapLength="760" styleClass="orders-board" vgap="16">
+                    <padding>
+                        <Insets bottom="24" left="24" right="24" top="24" />
+                    </padding>
+
+                    <VBox spacing="12" styleClass="order-ticket urgent-ticket">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label styleClass="ticket-number" text="#1024" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label styleClass="status-pill pending-pill" text="Pendiente" />
+                        </HBox>
+                        <Label styleClass="ticket-table" text="Mesa 07" />
+                        <Label styleClass="ticket-time danger-text" text="Hace 18 min" />
+                        <Separator />
+                        <Label styleClass="ticket-item" text="2 x Pollo a la brasa 1/4" />
+                        <Label styleClass="ticket-item" text="1 x Papas familiares" />
+                        <Label styleClass="ticket-item" text="2 x Chicha morada" />
+                        <Button maxWidth="Infinity" onAction="#btnVerPedido" styleClass="secondary-button" text="Ver detalle" />
+                    </VBox>
+
+                    <VBox spacing="12" styleClass="order-ticket active-ticket">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label styleClass="ticket-number" text="#1025" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label styleClass="status-pill progress-pill" text="En preparacion" />
+                        </HBox>
+                        <Label styleClass="ticket-table" text="Mesa 03" />
+                        <Label styleClass="ticket-time warning-text" text="Hace 11 min" />
+                        <Separator />
+                        <Label styleClass="ticket-item" text="1 x Parrilla personal" />
+                        <Label styleClass="ticket-item" text="1 x Ensalada fresca" />
+                        <Label styleClass="ticket-item" text="Sin ajies" />
+                        <Button maxWidth="Infinity" onAction="#btnVerPedido" styleClass="secondary-button" text="Ver detalle" />
+                    </VBox>
+
+                    <VBox spacing="12" styleClass="order-ticket">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label styleClass="ticket-number" text="#1026" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label styleClass="status-pill ready-pill" text="Listo" />
+                        </HBox>
+                        <Label styleClass="ticket-table" text="Para llevar" />
+                        <Label styleClass="ticket-time success-text" text="Hace 5 min" />
+                        <Separator />
+                        <Label styleClass="ticket-item" text="1 x Mostrito" />
+                        <Label styleClass="ticket-item" text="1 x Gaseosa 500 ml" />
+                        <Label styleClass="ticket-item" text="Empacar con cubiertos" />
+                        <Button maxWidth="Infinity" onAction="#btnVerPedido" styleClass="secondary-button" text="Ver detalle" />
+                    </VBox>
+                </FlowPane>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <right>
+        <VBox spacing="16" styleClass="detail-panel">
+            <padding>
+                <Insets bottom="24" left="20" right="20" top="24" />
+            </padding>
+
+            <VBox spacing="4">
+                <Label styleClass="section-title" text="Detalle del pedido" />
+                <Label fx:id="lblPedidoSeleccionado" styleClass="detail-order-number" text="Pedido #1024" />
+            </VBox>
+
+            <HBox spacing="10">
+                <VBox HBox.hgrow="ALWAYS" styleClass="detail-chip">
+                    <Label styleClass="chip-label" text="Estado" />
+                    <Label fx:id="lblEstadoPedido" styleClass="chip-value" text="Pendiente" />
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS" styleClass="detail-chip">
+                    <Label styleClass="chip-label" text="Mesa" />
+                    <Label fx:id="lblMesaPedido" styleClass="chip-value" text="Mesa 07" />
+                </VBox>
+            </HBox>
+
+            <VBox styleClass="detail-chip">
+                <Label styleClass="chip-label" text="Tiempo de espera" />
+                <Label fx:id="lblTiempoPedido" styleClass="chip-value danger-text" text="Hace 18 min" />
+            </VBox>
+
+            <TableView fx:id="tblDetalleCocina" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colCantidad" prefWidth="80" text="Cant." />
+                    <TableColumn fx:id="colProducto" prefWidth="190" text="Producto" />
+                    <TableColumn fx:id="colNotas" prefWidth="170" text="Notas" />
+                </columns>
+            </TableView>
+
+            <VBox spacing="10">
+                <Button maxWidth="Infinity" onAction="#btnMarcarRecibido" styleClass="secondary-button" text="Marcar recibido" />
+                <Button maxWidth="Infinity" onAction="#btnIniciarPreparacion" styleClass="warning-button" text="Iniciar preparacion" />
+                <Button maxWidth="Infinity" onAction="#btnMarcarListo" styleClass="success-button" text="Pedido listo" />
+            </VBox>
+        </VBox>
+    </right>
+</BorderPane>
