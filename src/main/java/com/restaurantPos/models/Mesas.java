@@ -15,6 +15,10 @@ public class Mesas {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer mesas;
+    private String numero;
 
+    @Override
+    public String toString() {
+        return numero;
+    }
 }

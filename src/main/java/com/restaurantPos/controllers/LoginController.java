@@ -11,16 +11,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class LoginController {
     private final UsuarioService usuarioService;
     private final NavigationService navigationService;
-    public LoginController(UsuarioService usuarioService,  NavigationService navigationService) {
-        this.usuarioService = usuarioService;
-        this.navigationService = navigationService;
-    }
+
 
     @FXML
     private Button btnLogin;
