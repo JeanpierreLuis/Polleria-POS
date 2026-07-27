@@ -1,10 +1,10 @@
 package com.restaurantPos.controllers;
 
-import com.restaurantPos.models.DetallePedido;
-import com.restaurantPos.models.Mesas;
-import com.restaurantPos.models.Productos;
+import com.restaurantPos.models.*;
+import com.restaurantPos.services.ClientesService;
 import com.restaurantPos.services.MesasService;
 import com.restaurantPos.services.ProductosService;
+import com.restaurantPos.utils.Session;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
+
 
 @Component
 @RequiredArgsConstructor
@@ -29,6 +31,7 @@ public class OrdersController {
 
     private final MesasService mesasService;
     private final ProductosService productosService;
+    private final ClientesService clientesService;
 
     // ==========================
     // VARIABLES
@@ -37,6 +40,8 @@ public class OrdersController {
     private ObservableList<DetallePedido> detallePedido;
 
     private ObservableList<Productos> productos;
+
+    private BigDecimal totalPedido = BigDecimal.ZERO;
 
     // ==========================
     // COMPONENTES FXML
@@ -156,6 +161,9 @@ public class OrdersController {
         tblDetalle.setItems(detallePedido);
     }
 
+    //=============================
+    //Configuracion de busqueda para productos
+    // ============================
     private void configurarBusqueda() {
 
         FilteredList<Productos> filtroProducto =
@@ -190,6 +198,7 @@ public class OrdersController {
 
         Productos productoSeleccionado =
                 tblProductos.getSelectionModel().getSelectedItem();
+
 
         if (productoSeleccionado == null) {
             return;
@@ -245,7 +254,7 @@ public class OrdersController {
             detallePedido.clear();
             cbMesa.getSelectionModel().clearSelection();
             cbTipoPedido.getSelectionModel().clearSelection();
-            lblTotal.setText("S/ 0.00");
+            lblTotal.setText("S/ " + totalPedido);
         }
 
     }
@@ -284,7 +293,22 @@ public class OrdersController {
 
     @FXML
     void btnRegistrarPedido(ActionEvent event) {
+    String nombreCliente = txtCliente.getText().trim();
+    Clientes cliente = clientesService.obtenerOCrearCliente(nombreCliente);
 
+    Mesas mesaSeleccionada = cbMesa.getSelectionModel().getSelectedItem();
+
+    String tipoPedido = cbTipoPedido.getSelectionModel().getSelectedItem();
+
+    Usuarios usuario = Session.getUsuarioActual();
+
+        Pedidos Pedido = Pedidos.builder()
+                .usuario(usuario)
+                .mesa(mesaSeleccionada)
+                .tipoPedido(tipoPedido).
+                total(totalPedido)
+                .fecha(LocalDateTime.now())
+                .build();
     }
 
     // ==========================
@@ -305,5 +329,10 @@ public class OrdersController {
 
         lblTotal.setText("S/ " + totalRedondeado);
     }
+
+    //=============================
+    //CONSTRUIR EL PEDIDO
+    //=============================
+
 
 }

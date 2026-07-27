@@ -22,4 +22,16 @@ public class UsuarioService {
         }
         return  encoder.matches(password, usuario.getPassword());
     }
+
+    public Usuarios autenticar(String username, String password) {
+        Usuarios usuario = usuarioRepository.findByUsername(username).orElse(null);
+
+        if (usuario == null) {
+            return null;
+        }
+        if  (!encoder.matches(password, usuario.getPassword())) {
+            return null;
+        }
+        return usuario;
+    }
 }
