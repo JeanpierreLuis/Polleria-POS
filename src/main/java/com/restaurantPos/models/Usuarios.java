@@ -24,7 +24,7 @@ public class Usuarios {
 
     private String telefono;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rol")
     private Roles rol;
 }

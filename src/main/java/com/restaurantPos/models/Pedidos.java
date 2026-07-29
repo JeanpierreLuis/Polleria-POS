@@ -15,17 +15,21 @@ import java.time.LocalDateTime;
 public class Pedidos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long id_pedido;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario")
     private Usuarios usuario;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_mesa")
     private Mesas mesa;
 
-    @Column(name = "tipos_pedido")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente")
+    private Clientes cliente;
+
+    @Column(name = "tipo_pedido")
     private String tipoPedido;
 
     @Column(name = "total")

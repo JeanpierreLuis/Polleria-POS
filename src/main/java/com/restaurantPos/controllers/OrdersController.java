@@ -1,10 +1,12 @@
 package com.restaurantPos.controllers;
 
-import com.restaurantPos.models.DetallePedido;
-import com.restaurantPos.models.Mesas;
-import com.restaurantPos.models.Productos;
+import com.restaurantPos.models.*;
+import com.restaurantPos.repositories.DetallePedidoRepository;
+import com.restaurantPos.repositories.PedidosRepository;
+import com.restaurantPos.services.ClientesService;
 import com.restaurantPos.services.MesasService;
 import com.restaurantPos.services.ProductosService;
+import com.restaurantPos.utils.Session;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
+
 
 @Component
 @RequiredArgsConstructor
@@ -29,6 +33,9 @@ public class OrdersController {
 
     private final MesasService mesasService;
     private final ProductosService productosService;
+    private final ClientesService clientesService;
+    private final PedidosRepository pedidosRepository;
+    private final DetallePedidoRepository detallePedidoRepository;
 
     // ==========================
     // VARIABLES
@@ -37,6 +44,8 @@ public class OrdersController {
     private ObservableList<DetallePedido> detallePedido;
 
     private ObservableList<Productos> productos;
+
+    private BigDecimal totalPedido = BigDecimal.ZERO;
 
     // ==========================
     // COMPONENTES FXML
@@ -53,6 +62,9 @@ public class OrdersController {
 
     @FXML
     private TextField txtCliente;
+
+    @FXML
+    private TextField txtTelefono;
 
     @FXML
     private Label lblTotal;
@@ -137,7 +149,7 @@ public class OrdersController {
                 new PropertyValueFactory<>("cantidad"));
 
         colDetallePrecio.setCellValueFactory(
-                new PropertyValueFactory<>("preciounitario"));
+                new PropertyValueFactory<>("precioUnitario"));
 
         colDetalleSubtotal.setCellValueFactory(
                 new PropertyValueFactory<>("subtotal"));
@@ -156,6 +168,9 @@ public class OrdersController {
         tblDetalle.setItems(detallePedido);
     }
 
+    //=============================
+    //Configuracion de busqueda para productos
+    // ============================
     private void configurarBusqueda() {
 
         FilteredList<Productos> filtroProducto =
@@ -191,6 +206,7 @@ public class OrdersController {
         Productos productoSeleccionado =
                 tblProductos.getSelectionModel().getSelectedItem();
 
+
         if (productoSeleccionado == null) {
             return;
         }
@@ -204,7 +220,7 @@ public class OrdersController {
 
                 detalle.setSubtotal(
                         detalle.getCantidad()
-                                * detalle.getPreciounitario()
+                                * detalle.getPrecioUnitario()
                 );
 
                 tblDetalle.refresh();
@@ -220,7 +236,7 @@ public class OrdersController {
         DetallePedido nuevoDetalle = DetallePedido.builder()
                 .producto(productoSeleccionado)
                 .cantidad(1)
-                .preciounitario(precioProducto)
+                .precioUnitario(precioProducto)
                 .subtotal(precioProducto)
                 .build();
 
@@ -245,7 +261,7 @@ public class OrdersController {
             detallePedido.clear();
             cbMesa.getSelectionModel().clearSelection();
             cbTipoPedido.getSelectionModel().clearSelection();
-            lblTotal.setText("S/ 0.00");
+            lblTotal.setText("S/ " + totalPedido);
         }
 
     }
@@ -272,7 +288,7 @@ public class OrdersController {
             detalleSeleccionado.setCantidad(detalleSeleccionado.getCantidad() - 1);
 
           detalleSeleccionado.setSubtotal(
-                  detalleSeleccionado.getCantidad() * detalleSeleccionado.getPreciounitario());
+                  detalleSeleccionado.getCantidad() * detalleSeleccionado.getPrecioUnitario());
 
             tblDetalle.refresh();
         }else{
@@ -282,9 +298,59 @@ public class OrdersController {
         calcularTotal();
     }
 
+    //=============================
+    //CONSTRUIR EL PEDIDO
+    //=============================
+
+
     @FXML
     void btnRegistrarPedido(ActionEvent event) {
+    String nombreCliente = txtCliente.getText().trim();
 
+    String telefonoCliente = txtTelefono.getText().trim();
+
+    Clientes cliente = clientesService.obtenerOCrearCliente(nombreCliente, telefonoCliente);
+
+    Mesas mesaSeleccionada = cbMesa.getSelectionModel().getSelectedItem();
+
+        if(mesaSeleccionada == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Advertencia");
+            alert.setHeaderText(null);
+            alert.setContentText("Seleccione una mesa");
+            alert.showAndWait();
+            return;
+        }
+        String tipoPedido = cbTipoPedido.getSelectionModel().getSelectedItem();
+        if(tipoPedido == null){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Advertencia");
+            alert.setHeaderText(null);
+            alert.setContentText("Seleccione un tipo de pedido");
+            alert.showAndWait();
+            return;
+        }
+
+
+    Usuarios usuario = Session.getUsuarioActual();
+
+        Pedidos pedido = Pedidos.builder()
+                .usuario(usuario)
+                .cliente(cliente)
+                .mesa(mesaSeleccionada)
+                .tipoPedido(tipoPedido).
+                total(totalPedido)
+                .fecha(LocalDateTime.now())
+                .build();
+
+        pedido = pedidosRepository.save(pedido);
+
+        System.out.println("Pedido guardado con ID: " + pedido.getId_pedido());
+
+        for (DetallePedido detalle :  detallePedido) {
+            detalle.setPedido(pedido);
+            detallePedidoRepository.save(detalle);
+        }
     }
 
     // ==========================
@@ -300,10 +366,9 @@ public class OrdersController {
                                 : 0.0)
                 .sum();
 
-        BigDecimal totalRedondeado = BigDecimal.valueOf(total)
+        totalPedido = BigDecimal.valueOf(total)
                 .setScale(2, RoundingMode.HALF_UP);
 
-        lblTotal.setText("S/ " + totalRedondeado);
+        lblTotal.setText("S/ " + totalPedido);
     }
-
 }

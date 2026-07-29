@@ -13,12 +13,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="760.0"
-            prefWidth="1180.0"
-            styleClass="orders-root"
-            xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.restaurantPos.controllers.OrdersController">
+<BorderPane prefHeight="760.0" prefWidth="1180.0" styleClass="orders-root" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurantPos.controllers.OrdersController">
 
     <top>
         <VBox spacing="16" styleClass="orders-header">
@@ -52,14 +47,25 @@
                         <ComboBox fx:id="cbTipoPedido" prefWidth="160" />
                     </VBox>
 
-                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <VBox prefWidth="250">
                         <Label styleClass="form-label" text="Cliente" />
-                        <TextField fx:id="txtCliente" maxWidth="Infinity" promptText="Nombre del cliente" />
+                        <TextField fx:id="txtCliente"
+                                   prefWidth="250"
+                                   promptText="Nombre del cliente" />
                     </VBox>
+
+                    <VBox prefWidth="150">
+                        <Label styleClass="form-label" text="Teléfono" />
+                        <TextField fx:id="txtTelefono"
+                                   prefWidth="150"
+                                   promptText="Teléfono" />
+                    </VBox>
+
+
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="10">
-                    <TextField fx:id="txtBuscarProducto" HBox.hgrow="ALWAYS" promptText="Buscar producto por nombre..." />
+                    <TextField fx:id="txtBuscarProducto" prefHeight="26.0" prefWidth="684.0" promptText="Buscar producto por nombre..." HBox.hgrow="ALWAYS" />
                     <Button onAction="#btnBuscarProducto" styleClass="secondary-button" text="Buscar" />
                 </HBox>
             </VBox>
