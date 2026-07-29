@@ -44,7 +44,8 @@ public class JavaFxApplication extends Application{
         context.close();
     }
 
-    public static void main(String[] args){launch(args);
+    public static void main(String[] args)
+    {launch(args);
     }
 
 }

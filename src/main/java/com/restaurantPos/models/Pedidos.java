@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class Pedidos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long id_pedido;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario")
@@ -29,7 +29,7 @@ public class Pedidos {
     @JoinColumn(name = "id_cliente")
     private Clientes cliente;
 
-    @Column(name = "tipos_pedido")
+    @Column(name = "tipo_pedido")
     private String tipoPedido;
 
     @Column(name = "total")

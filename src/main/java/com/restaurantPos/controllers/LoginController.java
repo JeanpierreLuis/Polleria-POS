@@ -64,7 +64,7 @@ public class LoginController {
                 case "ADMIN":
                     navigationService.changeScene(stage, Paths.DASHBOARD_PAGE, PathsCss.CSS_DASHBOARD);
                     break;
-                case "COCINA":
+                case "COCINERO":
                     navigationService.changeScene(stage, Paths.KITCHEN_PAGE, PathsCss.CSS_KITCHEN);
                     break;
                 case "MOZO":

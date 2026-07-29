@@ -13,7 +13,7 @@ import lombok.*;
 public class DetallePedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_detalle_pedido;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pedido")
@@ -25,7 +25,8 @@ public class DetallePedido {
 
     private Integer cantidad;
 
-    private Double preciounitario;
+    @Column(name = "precio_unitario")
+    private Double precioUnitario;
 
     private Double subtotal;
 }

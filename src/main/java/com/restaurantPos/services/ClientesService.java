@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 public class ClientesService {
     private final ClientesRepository clientesRepository;
 
-    public Clientes obtenerOCrearCliente(String nombre) {
+    public Clientes obtenerOCrearCliente(String nombre, String telefono) {
         return clientesRepository.findByNombre(nombre).orElseGet(() -> {
             Clientes clientes = Clientes.builder()
                     .nombre(nombre)
+                    .telefono(telefono)
                     .build();
 
             return clientesRepository.save(clientes);
         });
     }
-
 }

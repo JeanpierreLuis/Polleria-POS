@@ -19,7 +19,5 @@ public class Clientes {
 
     private String nombre;
 
-    private String apellido;
-
     private String telefono;
 }
