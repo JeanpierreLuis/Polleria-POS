@@ -229,3 +229,16 @@
     -fx-text-fill: #ffffff;
     -fx-font-weight: bold;
 }
+
+.pedido-card {
+    -fx-background-color: white;
+    -fx-border-color: #dcdcdc;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 12;
+}
+
+.pedido-card:hover {
+    -fx-border-color: #ff9800;
+}

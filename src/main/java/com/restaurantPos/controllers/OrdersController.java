@@ -338,9 +338,10 @@ public class OrdersController {
                 .usuario(usuario)
                 .cliente(cliente)
                 .mesa(mesaSeleccionada)
-                .tipoPedido(tipoPedido).
-                total(totalPedido)
+                .tipoPedido(tipoPedido)
+                .total(totalPedido)
                 .fecha(LocalDateTime.now())
+                .estado(Pedidos.EstadoPedido.PENDIENTE)
                 .build();
 
         pedido = pedidosRepository.save(pedido);

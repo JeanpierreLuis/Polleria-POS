@@ -13,12 +13,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="800.0"
-            prefWidth="1300.0"
-            styleClass="kitchen-root"
-            xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.restaurantPos.controllers.KitchenController">
+<BorderPane prefHeight="800.0" prefWidth="1300.0" styleClass="kitchen-root" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurantPos.controllers.KitchenController">
 
     <top>
         <HBox alignment="CENTER_LEFT" spacing="16" styleClass="kitchen-header">
@@ -150,11 +145,11 @@
             </VBox>
 
             <HBox spacing="10">
-                <VBox HBox.hgrow="ALWAYS" styleClass="detail-chip">
+                <VBox styleClass="detail-chip" HBox.hgrow="ALWAYS">
                     <Label styleClass="chip-label" text="Estado" />
                     <Label fx:id="lblEstadoPedido" styleClass="chip-value" text="Pendiente" />
                 </VBox>
-                <VBox HBox.hgrow="ALWAYS" styleClass="detail-chip">
+                <VBox styleClass="detail-chip" HBox.hgrow="ALWAYS">
                     <Label styleClass="chip-label" text="Mesa" />
                     <Label fx:id="lblMesaPedido" styleClass="chip-value" text="Mesa 07" />
                 </VBox>
@@ -167,9 +162,8 @@
 
             <TableView fx:id="tblDetalleCocina" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="colCantidad" prefWidth="80" text="Cant." />
-                    <TableColumn fx:id="colProducto" prefWidth="190" text="Producto" />
-                    <TableColumn fx:id="colNotas" prefWidth="170" text="Notas" />
+                    <TableColumn fx:id="colDetalleCantidad" prefWidth="80" text="Cant." />
+                    <TableColumn fx:id="colDetalleProducto" prefWidth="190" text="Producto" />
                 </columns>
             </TableView>
 

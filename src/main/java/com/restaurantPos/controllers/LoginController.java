@@ -72,7 +72,7 @@ public class LoginController {
                     break;
 
                 default:
-                    lblMensaje.setText("Usuario no existe");
+                    lblMensaje.setText(null);
             }
 
         } catch (Exception e) {

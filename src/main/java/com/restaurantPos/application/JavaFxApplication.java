@@ -24,14 +24,14 @@ public class JavaFxApplication extends Application{
 
     @Override
     public void start (Stage stage) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(Paths.LOGIN_PAGE));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(Paths.KITCHEN_PAGE));
 
         loader.setControllerFactory(context::getBean);
         Parent pane = loader.load();
         Scene scene = new Scene(pane, 900, 600);
 
         scene.getStylesheets().add(
-                getClass().getResource(PathsCss.CSS_LOGIN).toExternalForm()
+                getClass().getResource(PathsCss.CSS_KITCHEN).toExternalForm()
         );
         stage.setTitle("Restaurant Brasero");
         stage.setResizable(true);
