@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="800.0"
+            prefWidth="1300.0"
+            styleClass="waiter-root"
+            stylesheets="@../styles/waiter.css"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1">
+
+    <top>
+        <VBox spacing="14" styleClass="waiter-header">
+            <padding>
+                <Insets bottom="18" left="24" right="24" top="18" />
+            </padding>
+
+            <HBox alignment="CENTER_LEFT" spacing="16">
+                <VBox spacing="2">
+                    <Label styleClass="page-title" text="Seguimiento de Pedidos" />
+                    <Label styleClass="page-subtitle" text="Pedidos enviados a cocina y estado de preparacion para servicio" />
+                </VBox>
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <VBox alignment="CENTER_RIGHT" spacing="3" styleClass="detail-chip">
+                    <Label styleClass="chip-label" text="Ultima actualizacion" />
+                    <Label fx:id="lblUltimaActualizacion" styleClass="chip-value" text="Ahora" />
+                </VBox>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <TextField fx:id="txtBuscarPedido"
+                           prefWidth="320"
+                           promptText="Buscar por pedido, mesa o cliente" />
+
+                <ComboBox fx:id="cbFiltroEstado"
+                          prefWidth="190"
+                          promptText="Estado" />
+
+                <ComboBox fx:id="cbFiltroMesa"
+                          prefWidth="150"
+                          promptText="Mesa" />
+
+                <Button fx:id="btnActualizarSeguimiento"
+                        styleClass="secondary-button"
+                        text="Actualizar" />
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Label styleClass="status-pill pending-pill" text="Pendiente" />
+                <Label styleClass="status-pill progress-pill" text="En preparacion" />
+                <Label styleClass="status-pill ready-pill" text="Listo" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <left>
+        <VBox spacing="14" styleClass="waiter-summary">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+
+            <Label styleClass="section-title" text="Resumen" />
+
+            <VBox styleClass="metric-card">
+                <Label styleClass="metric-label" text="Enviados a cocina" />
+                <Label fx:id="lblPedidosEnviados" styleClass="metric-value" text="12" />
+            </VBox>
+
+            <VBox styleClass="metric-card">
+                <Label styleClass="metric-label" text="Pendientes" />
+                <Label fx:id="lblPedidosPendientes" styleClass="metric-value danger-text" text="3" />
+            </VBox>
+
+            <VBox styleClass="metric-card">
+                <Label styleClass="metric-label" text="En preparacion" />
+                <Label fx:id="lblPedidosPreparacion" styleClass="metric-value warning-text" text="6" />
+            </VBox>
+
+            <VBox styleClass="metric-card">
+                <Label styleClass="metric-label" text="Listos para servir" />
+                <Label fx:id="lblPedidosListos" styleClass="metric-value success-text" text="3" />
+            </VBox>
+
+            <Separator />
+
+            <Label styleClass="section-title" text="Lectura rapida" />
+
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Region styleClass="priority-dot high-priority" />
+                <Label styleClass="hint-label" text="Demorado: revisar cocina" />
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Region styleClass="priority-dot medium-priority" />
+                <Label styleClass="hint-label" text="En curso: informar al cliente" />
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Region styleClass="priority-dot normal-priority" />
+                <Label styleClass="hint-label" text="Listo: llevar a mesa" />
+            </HBox>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox spacing="16">
+            <padding>
+                <Insets bottom="24" left="24" right="20" top="24" />
+            </padding>
+
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <VBox spacing="2">
+                    <Label styleClass="section-title" text="Pedidos enviados a cocina" />
+                    <Label styleClass="hint-label" text="Selecciona un pedido para consultar productos, notas y estado del servicio" />
+                </VBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="lblTotalSeguimiento" styleClass="status-pill progress-pill" text="12 activos" />
+            </HBox>
+
+            <TableView fx:id="tblPedidosCocina" VBox.vgrow="ALWAYS">
+                <placeholder>
+                    <Label styleClass="hint-label" text="No hay pedidos enviados a cocina." />
+                </placeholder>
+                <columns>
+                    <TableColumn fx:id="colPedido" prefWidth="95" text="Pedido" />
+                    <TableColumn fx:id="colMesa" prefWidth="95" text="Mesa" />
+                    <TableColumn fx:id="colCliente" prefWidth="185" text="Cliente" />
+                    <TableColumn fx:id="colHoraEnvio" prefWidth="130" text="Enviado" />
+                    <TableColumn fx:id="colEstadoCocina" prefWidth="150" text="Estado cocina" />
+                    <TableColumn fx:id="colTiempoEspera" prefWidth="130" text="Espera" />
+                    <TableColumn fx:id="colPrioridad" prefWidth="115" text="Prioridad" />
+                    <TableColumn fx:id="colObservaciones" prefWidth="260" text="Observaciones" />
+                </columns>
+            </TableView>
+
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <VBox HBox.hgrow="ALWAYS" styleClass="detail-chip">
+                    <Label styleClass="chip-label" text="Pedido destacado" />
+                    <Label fx:id="lblPedidoDestacado" styleClass="chip-value" text="#1025 - Mesa 03 en preparacion" />
+                </VBox>
+
+                <VBox HBox.hgrow="ALWAYS" styleClass="detail-chip">
+                    <Label styleClass="chip-label" text="Siguiente accion" />
+                    <Label fx:id="lblSiguienteAccion" styleClass="chip-value warning-text" text="Confirmar tiempo estimado con cocina" />
+                </VBox>
+            </HBox>
+        </VBox>
+    </center>
+
+    <right>
+        <VBox spacing="16" styleClass="detail-panel">
+            <padding>
+                <Insets bottom="24" left="20" right="20" top="24" />
+            </padding>
+
+            <VBox spacing="4">
+                <Label styleClass="section-title" text="Detalle para el mesero" />
+                <Label fx:id="lblPedidoSeleccionado" styleClass="detail-order-number" text="Pedido #1025" />
+                <Label fx:id="lblMesaClienteSeleccionado" styleClass="hint-label" text="Mesa 03 - Cliente: Ana Torres" />
+            </VBox>
+
+            <HBox spacing="10">
+                <VBox HBox.hgrow="ALWAYS" styleClass="detail-chip">
+                    <Label styleClass="chip-label" text="Estado cocina" />
+                    <Label fx:id="lblEstadoCocinaSeleccionado" styleClass="chip-value warning-text" text="En preparacion" />
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS" styleClass="detail-chip">
+                    <Label styleClass="chip-label" text="Espera" />
+                    <Label fx:id="lblEsperaSeleccionada" styleClass="chip-value" text="11 min" />
+                </VBox>
+            </HBox>
+
+            <VBox styleClass="detail-chip">
+                <Label styleClass="chip-label" text="Mensaje para sala" />
+                <Label fx:id="lblMensajeSala" styleClass="chip-value" text="El pedido sigue en preparacion. Avisar si supera 15 min." />
+            </VBox>
+
+            <TableView fx:id="tblDetallePedidoCocina" prefHeight="260" VBox.vgrow="ALWAYS">
+                <placeholder>
+                    <Label styleClass="hint-label" text="Selecciona un pedido para ver sus productos." />
+                </placeholder>
+                <columns>
+                    <TableColumn fx:id="colDetalleCantidad" prefWidth="70" text="Cant." />
+                    <TableColumn fx:id="colDetalleProducto" prefWidth="190" text="Producto" />
+                    <TableColumn fx:id="colDetalleEstado" prefWidth="125" text="Estado" />
+                    <TableColumn fx:id="colDetalleNota" prefWidth="170" text="Nota" />
+                </columns>
+            </TableView>
+
+            <VBox spacing="10">
+                <Button fx:id="btnNotificarCliente"
+                        maxWidth="Infinity"
+                        styleClass="secondary-button"
+                        text="Notificar al cliente" />
+                <Button fx:id="btnMarcarServido"
+                        maxWidth="Infinity"
+                        styleClass="success-button"
+                        text="Marcar como servido" />
+            </VBox>
+        </VBox>
+    </right>
+</BorderPane>
