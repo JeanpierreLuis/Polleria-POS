@@ -68,7 +68,7 @@ public class LoginController {
                     navigationService.changeScene(stage, Paths.KITCHEN_PAGE, PathsCss.CSS_KITCHEN);
                     break;
                 case "MOZO":
-                    navigationService.changeScene(stage, Paths.ORDERS_PAGE, PathsCss.CSS_ORDER);
+                    navigationService.changeScene(stage, Paths.ORDERS_PAGE, PathsCss.CSS_ORDERS);
                     break;
 
                 default:

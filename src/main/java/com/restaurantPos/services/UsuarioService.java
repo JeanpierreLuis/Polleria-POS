@@ -13,16 +13,6 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public boolean login(String username, String password) {
-
-        Usuarios usuario = usuarioRepository.findByUsername(username).orElse(null);
-
-        if (usuario == null) {
-            return false;
-        }
-        return  encoder.matches(password, usuario.getPassword());
-    }
-
     public Usuarios autenticar(String username, String password) {
         Usuarios usuario = usuarioRepository.findByUsername(username).orElse(null);
 

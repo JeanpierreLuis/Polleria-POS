@@ -42,17 +42,17 @@
 
             <VBox styleClass="metric-card">
                 <Label styleClass="metric-label" text="Pendientes" />
-                <Label styleClass="metric-value danger-text" text="6" />
+                <Label fx:id="lblPendientes" styleClass="metric-value danger-text" />
             </VBox>
 
             <VBox styleClass="metric-card">
                 <Label styleClass="metric-label" text="En preparacion" />
-                <Label styleClass="metric-value warning-text" text="4" />
+                <Label fx:id="lblPreparando" styleClass="metric-value warning-text" />
             </VBox>
 
             <VBox styleClass="metric-card">
                 <Label styleClass="metric-label" text="Listos" />
-                <Label styleClass="metric-value success-text" text="3" />
+                <Label fx:id="lblListos" styleClass="metric-value success-text" />
             </VBox>
 
             <Separator />
@@ -157,7 +157,7 @@
 
             <VBox styleClass="detail-chip">
                 <Label styleClass="chip-label" text="Tiempo de espera" />
-                <Label fx:id="lblTiempoPedido" styleClass="chip-value danger-text" text="Hace 18 min" />
+                <Label fx:id="lblTiempoPedido" styleClass="chip-value danger-text" />
             </VBox>
 
             <TableView fx:id="tblDetalleCocina" VBox.vgrow="ALWAYS">

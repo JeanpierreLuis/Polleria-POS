@@ -13,7 +13,7 @@ public class PedidoService {
 
     private final PedidosRepository pedidosRepository;
 
-    public Pedidos guardarPedido(Pedidos pedido){
+    public Pedidos guardarPedido(Pedidos pedido) {
         return pedidosRepository.save(pedido);
     }
 
@@ -21,11 +21,18 @@ public class PedidoService {
         return pedidosRepository.findAll();
     }
 
-    public Pedidos buscarPorId(Long id){
+    public Pedidos buscarPorId(Long id) {
         return pedidosRepository.findById(id).orElse(null);
     }
 
-    public void eliminar (Long id){
+    public void eliminar(Long id) {
         pedidosRepository.deleteById(id);
+    }
+
+
+    public void cambiarEstado(Long idPedido, Pedidos.EstadoPedido estado) {
+        Pedidos pedido = pedidosRepository.findById(idPedido).orElse(null);
+        pedido.setEstado(estado);
+        pedidosRepository.save(pedido);
     }
 }
