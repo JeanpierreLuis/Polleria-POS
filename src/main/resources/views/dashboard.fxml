@@ -3,119 +3,252 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="800.0"
-            prefWidth="1300.0"
+<BorderPane prefHeight="760.0"
+            prefWidth="1180.0"
+            styleClass="root"
             xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.restaurantPos.controllers.DashboardController">
 
     <left>
-        <VBox spacing="12" styleClass="sidebar">
-
+        <VBox prefWidth="250.0" spacing="18" styleClass="sidebar">
             <padding>
-                <Insets bottom="24" left="18" right="18" top="24" />
+                <Insets bottom="22" left="18" right="18" top="24" />
             </padding>
 
-            <VBox spacing="2" styleClass="brand">
-                <Label styleClass="logo" text="POLLERÍA POS" />
-                <Label styleClass="logo-subtitle" text="Panel operativo" />
+            <VBox spacing="4" styleClass="brand">
+                <Label styleClass="logo" text="Restaurant POS" />
+                <Label styleClass="logo-subtitle" text="Panel administrativo" />
             </VBox>
 
-            <Button id="activeMenuButton" onAction="#btnDashboard" styleClass="menu-button" text="Dashboard" />
+            <VBox spacing="8" VBox.vgrow="ALWAYS">
+                <Button id="activeMenuButton" maxWidth="Infinity" onAction="#btnDashboard" styleClass="menu-button" text="Dashboard" />
+                <Button maxWidth="Infinity" onAction="#btnPedidos" styleClass="menu-button" text="Pedidos" />
+                <Button maxWidth="Infinity" onAction="#btnProductos" styleClass="menu-button" text="Productos" />
+                <Button maxWidth="Infinity" onAction="#btnCaja" styleClass="menu-button" text="Caja" />
+                <Button maxWidth="Infinity" onAction="#btnUsuarios" styleClass="menu-button" text="Usuarios" />
+                <Button maxWidth="Infinity" onAction="#btnReportes" styleClass="menu-button" text="Reportes" />
+            </VBox>
 
-            <Button onAction="#btnPedidos" styleClass="menu-button" text="Pedidos" />
-
-            <Button onAction="#btnCaja" styleClass="menu-button" text="Caja" />
-
-            <Button onAction="#btnProductos" styleClass="menu-button" text="Productos" />
-
-            <Button onAction="#btnUsuarios" styleClass="menu-button" text="Usuarios" />
-
-            <Button onAction="#btnReportes" styleClass="menu-button" text="Reportes" />
-
-            <Region VBox.vgrow="ALWAYS" />
-
-            <Label styleClass="sidebar-footer" text="Restaurant POS" />
-
+            <VBox spacing="8">
+                <Separator opacity="0.22" />
+                <Label styleClass="sidebar-footer" text="Turno actual" />
+                <Label style="-fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: 800;" text="Caja principal abierta" />
+                <Label styleClass="sidebar-footer" text="Sistema listo para operar" />
+            </VBox>
         </VBox>
     </left>
 
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="header">
-
+        <HBox alignment="CENTER_LEFT" spacing="16" styleClass="header">
             <padding>
                 <Insets bottom="18" left="28" right="28" top="18" />
             </padding>
 
-            <VBox spacing="2">
+            <VBox spacing="3">
                 <Label styleClass="header-title" text="Dashboard" />
-                <Label styleClass="header-subtitle" text="Resumen del día" />
+                <Label styleClass="header-subtitle" text="Resumen comercial y operativo del restaurante" />
             </VBox>
 
             <Region HBox.hgrow="ALWAYS" />
 
-            <Label styleClass="user-pill" text="Administrador" />
+            <VBox alignment="CENTER_RIGHT" spacing="2">
+                <Label styleClass="header-subtitle" text="Sucursal" />
+                <Label style="-fx-text-fill: #111827; -fx-font-size: 13px; -fx-font-weight: 800;" text="Principal" />
+            </VBox>
 
+            <Label styleClass="user-pill" text="Administrador" />
         </HBox>
     </top>
 
     <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="content">
+            <VBox spacing="22">
+                <padding>
+                    <Insets bottom="28" left="28" right="28" top="26" />
+                </padding>
 
-        <VBox spacing="26" styleClass="content">
+                <GridPane hgap="16" vgap="16">
+                    <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" maxWidth="Infinity" styleClass="card">
+                        <Label styleClass="card-title" text="Ventas del dia" />
+                        <Label styleClass="card-value" text="S/ 2,840.50" />
+                        <Label styleClass="card-caption" text="+12% frente al dia anterior" />
+                    </VBox>
 
-            <padding>
-                <Insets bottom="28" left="28" right="28" top="28" />
-            </padding>
+                    <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity" styleClass="card">
+                        <Label styleClass="card-title" text="Pedidos activos" />
+                        <Label styleClass="card-value" text="18" />
+                        <Label styleClass="card-caption" text="7 en cocina, 11 en sala" />
+                    </VBox>
 
-            <HBox spacing="20">
+                    <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" maxWidth="Infinity" styleClass="card">
+                        <Label styleClass="card-title" text="Mesas ocupadas" />
+                        <Label styleClass="card-value" text="14 / 20" />
+                        <Label styleClass="card-caption" text="70% de ocupacion" />
+                    </VBox>
 
-                <VBox styleClass="card">
-                    <Label styleClass="card-title" text="Ventas Hoy" />
-                    <Label styleClass="card-value" text="S/ 1,250.00" />
-                    <Label styleClass="card-caption" text="Caja principal" />
-                </VBox>
+                    <VBox GridPane.columnIndex="3" GridPane.rowIndex="0" maxWidth="Infinity" styleClass="card">
+                        <Label styleClass="card-title" text="Ticket promedio" />
+                        <Label styleClass="card-value" text="S/ 54.20" />
+                        <Label styleClass="card-caption" text="Promedio por venta cerrada" />
+                    </VBox>
 
-                <VBox styleClass="card">
-                    <Label styleClass="card-title" text="Pedidos Pendientes" />
-                    <Label styleClass="card-value" text="15" />
-                    <Label styleClass="card-caption" text="Por atender" />
-                </VBox>
+                    <columnConstraints>
+                        <javafx.scene.layout.ColumnConstraints hgrow="ALWAYS" percentWidth="25" />
+                        <javafx.scene.layout.ColumnConstraints hgrow="ALWAYS" percentWidth="25" />
+                        <javafx.scene.layout.ColumnConstraints hgrow="ALWAYS" percentWidth="25" />
+                        <javafx.scene.layout.ColumnConstraints hgrow="ALWAYS" percentWidth="25" />
+                    </columnConstraints>
+                </GridPane>
 
-                <VBox styleClass="card">
-                    <Label styleClass="card-title" text="Clientes" />
-                    <Label styleClass="card-value" text="87" />
-                    <Label styleClass="card-caption" text="Registrados" />
-                </VBox>
+                <HBox spacing="18">
+                    <VBox spacing="16" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #e5e7eb; -fx-border-radius: 8; -fx-padding: 22;">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <VBox spacing="2">
+                                <Label styleClass="section-title" text="Accesos rapidos" />
+                                <Label styleClass="card-caption" text="Operaciones principales del turno" />
+                            </VBox>
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label styleClass="user-pill" text="Operativo" />
+                        </HBox>
 
-                <VBox styleClass="card">
-                    <Label styleClass="card-title" text="Productos" />
-                    <Label styleClass="card-value" text="120" />
-                    <Label styleClass="card-caption" text="En catálogo" />
-                </VBox>
+                        <GridPane hgap="12" vgap="12">
+                            <Button GridPane.columnIndex="0" GridPane.rowIndex="0" maxWidth="Infinity" onAction="#btnPedidoPrincipal" styleClass="action-button" text="Nuevo pedido" />
+                            <Button GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity" onAction="#btnProductoPrincipal" styleClass="action-button" text="Gestionar productos" />
+                            <Button GridPane.columnIndex="0" GridPane.rowIndex="1" maxWidth="Infinity" onAction="#btnCajaPrincipal" styleClass="action-button" text="Movimiento de caja" />
+                            <Button GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="Infinity" onAction="#btnReportesPrincipal" styleClass="action-button" text="Ver reportes" />
 
-            </HBox>
+                            <columnConstraints>
+                                <javafx.scene.layout.ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
+                                <javafx.scene.layout.ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
+                            </columnConstraints>
+                        </GridPane>
 
-            <Label styleClass="section-title" text="Accesos rápidos" />
+                        <HBox spacing="14">
+                            <VBox HBox.hgrow="ALWAYS" spacing="8" style="-fx-background-color: #f9fafb; -fx-background-radius: 8; -fx-padding: 16;">
+                                <Label styleClass="card-title" text="Estado de cocina" />
+                                <Label style="-fx-text-fill: #111827; -fx-font-size: 22px; -fx-font-weight: 800;" text="7 pedidos" />
+                                <Label styleClass="card-caption" text="Tiempo promedio: 14 min" />
+                            </VBox>
 
-            <HBox spacing="20">
+                            <VBox HBox.hgrow="ALWAYS" spacing="8" style="-fx-background-color: #f9fafb; -fx-background-radius: 8; -fx-padding: 16;">
+                                <Label styleClass="card-title" text="Caja" />
+                                <Label style="-fx-text-fill: #111827; -fx-font-size: 22px; -fx-font-weight: 800;" text="S/ 1,320.00" />
+                                <Label styleClass="card-caption" text="Efectivo registrado" />
+                            </VBox>
+                        </HBox>
+                    </VBox>
 
-                <Button onAction="#btnPedidoPrincipal" styleClass="action-button" text="Nuevo Pedido" />
+                    <VBox prefWidth="330" spacing="16" style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #e5e7eb; -fx-border-radius: 8; -fx-padding: 22;">
+                        <Label styleClass="section-title" text="Rendimiento del turno" />
 
-                <Button onAction="#btnCajaPrincipal" styleClass="action-button" text="Abrir Caja" />
+                        <VBox spacing="12">
+                            <VBox spacing="6">
+                                <HBox alignment="CENTER_LEFT">
+                                    <Label styleClass="card-title" text="Ventas objetivo" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Label style="-fx-text-fill: #16a34a; -fx-font-weight: 800;" text="78%" />
+                                </HBox>
+                                <StackPane maxWidth="Infinity" minHeight="8" style="-fx-background-color: #e5e7eb; -fx-background-radius: 999;">
+                                    <Region maxWidth="220" minHeight="8" style="-fx-background-color: #16a34a; -fx-background-radius: 999;" StackPane.alignment="CENTER_LEFT" />
+                                </StackPane>
+                            </VBox>
 
-                <Button onAction="#btnProductoPrincipal" styleClass="action-button" text="Registrar Producto" />
+                            <VBox spacing="6">
+                                <HBox alignment="CENTER_LEFT">
+                                    <Label styleClass="card-title" text="Rotacion de mesas" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Label style="-fx-text-fill: #ea580c; -fx-font-weight: 800;" text="64%" />
+                                </HBox>
+                                <StackPane maxWidth="Infinity" minHeight="8" style="-fx-background-color: #e5e7eb; -fx-background-radius: 999;">
+                                    <Region maxWidth="182" minHeight="8" style="-fx-background-color: #ea580c; -fx-background-radius: 999;" StackPane.alignment="CENTER_LEFT" />
+                                </StackPane>
+                            </VBox>
 
-                <Button onAction="#btnReportesPrincipal" styleClass="action-button" text="Ver Reportes" />
+                            <VBox spacing="6">
+                                <HBox alignment="CENTER_LEFT">
+                                    <Label styleClass="card-title" text="Pedidos completados" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Label style="-fx-text-fill: #2563eb; -fx-font-weight: 800;" text="86%" />
+                                </HBox>
+                                <StackPane maxWidth="Infinity" minHeight="8" style="-fx-background-color: #e5e7eb; -fx-background-radius: 999;">
+                                    <Region maxWidth="244" minHeight="8" style="-fx-background-color: #2563eb; -fx-background-radius: 999;" StackPane.alignment="CENTER_LEFT" />
+                                </StackPane>
+                            </VBox>
+                        </VBox>
 
-            </HBox>
+                        <Separator />
 
-        </VBox>
+                        <VBox spacing="10">
+                            <Label styleClass="card-title" text="Alertas" />
+                            <Label styleClass="card-caption" text="Stock bajo: pollo broaster" />
+                            <Label styleClass="card-caption" text="Mesa 08 supera 45 min" />
+                            <Label styleClass="card-caption" text="Caja pendiente de arqueo" />
+                        </VBox>
+                    </VBox>
+                </HBox>
 
+                <HBox spacing="18">
+                    <VBox spacing="14" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #e5e7eb; -fx-border-radius: 8; -fx-padding: 22;">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label styleClass="section-title" text="Pedidos recientes" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label styleClass="card-caption" text="Actualizado hace unos minutos" />
+                        </HBox>
+
+                        <TableView prefHeight="250">
+                            <columns>
+                                <TableColumn prefWidth="110" text="Pedido" />
+                                <TableColumn prefWidth="170" text="Cliente" />
+                                <TableColumn prefWidth="120" text="Mesa" />
+                                <TableColumn prefWidth="130" text="Estado" />
+                                <TableColumn prefWidth="120" text="Total" />
+                            </columns>
+                        </TableView>
+                    </VBox>
+
+                    <VBox prefWidth="330" spacing="14" style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #e5e7eb; -fx-border-radius: 8; -fx-padding: 22;">
+                        <Label styleClass="section-title" text="Productos destacados" />
+
+                        <VBox spacing="12">
+                            <HBox alignment="CENTER_LEFT" spacing="12">
+                                <Label style="-fx-background-color: #fff7ed; -fx-background-radius: 8; -fx-padding: 10 12; -fx-text-fill: #9a3412; -fx-font-weight: 800;" text="01" />
+                                <VBox spacing="2">
+                                    <Label style="-fx-text-fill: #111827; -fx-font-weight: 800;" text="Pollo a la brasa" />
+                                    <Label styleClass="card-caption" text="42 unidades vendidas" />
+                                </VBox>
+                            </HBox>
+
+                            <HBox alignment="CENTER_LEFT" spacing="12">
+                                <Label style="-fx-background-color: #eff6ff; -fx-background-radius: 8; -fx-padding: 10 12; -fx-text-fill: #1d4ed8; -fx-font-weight: 800;" text="02" />
+                                <VBox spacing="2">
+                                    <Label style="-fx-text-fill: #111827; -fx-font-weight: 800;" text="Combo familiar" />
+                                    <Label styleClass="card-caption" text="27 unidades vendidas" />
+                                </VBox>
+                            </HBox>
+
+                            <HBox alignment="CENTER_LEFT" spacing="12">
+                                <Label style="-fx-background-color: #f0fdf4; -fx-background-radius: 8; -fx-padding: 10 12; -fx-text-fill: #15803d; -fx-font-weight: 800;" text="03" />
+                                <VBox spacing="2">
+                                    <Label style="-fx-text-fill: #111827; -fx-font-weight: 800;" text="Chicha morada" />
+                                    <Label styleClass="card-caption" text="31 unidades vendidas" />
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </ScrollPane>
     </center>
-
 </BorderPane>
