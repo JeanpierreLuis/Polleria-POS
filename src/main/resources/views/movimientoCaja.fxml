@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="820.0" prefWidth="1280.0" styleClass="movement-root" stylesheets="@../styles/movimientoCaja.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurantPos.controllers.CajaController">
+
+    <top>
+        <VBox spacing="16.0" styleClass="movement-header">
+            <padding>
+                <Insets bottom="18.0" left="24.0" right="24.0" top="18.0" />
+            </padding>
+
+            <HBox alignment="CENTER_LEFT" spacing="16.0">
+                <VBox spacing="3.0">
+                    <Label styleClass="page-title" text="Movimientos de caja" />
+                    <Label styleClass="page-subtitle" text="Apertura, cierre, ingresos, egresos y auditoria del turno" />
+                </VBox>
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <VBox alignment="CENTER_RIGHT" spacing="3.0">
+                    <Label styleClass="header-label" text="Turno actual" />
+                    <Label fx:id="lblTurnoActual" styleClass="header-value" text="Sin turno activo" />
+                </VBox>
+
+                <Label fx:id="lblEstadoCaja" styleClass="status-pill closed-pill" text="Caja cerrada" />
+            </HBox>
+
+            <GridPane hgap="14.0" vgap="14.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="25.0" />
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="25.0" />
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="25.0" />
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="25.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints />
+                </rowConstraints>
+
+                <VBox styleClass="metric-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label styleClass="metric-label" text="Saldo inicial" />
+                    <Label fx:id="lblSaldoInicial" styleClass="metric-value" text="S/ 0.00" />
+                    <Label styleClass="metric-caption" text="Monto registrado en apertura" />
+                </VBox>
+
+                <VBox styleClass="metric-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label styleClass="metric-label" text="Ingresos" />
+                    <Label fx:id="lblIngresos" styleClass="metric-value success-text" text="S/ 0.00" />
+                    <Label styleClass="metric-caption" text="Ventas y entradas manuales" />
+                </VBox>
+
+                <VBox styleClass="metric-card" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                    <Label styleClass="metric-label" text="Egresos" />
+                    <Label fx:id="lblEgresos" styleClass="metric-value danger-text" text="S/ 0.00" />
+                    <Label styleClass="metric-caption" text="Retiros, gastos y ajustes" />
+                </VBox>
+
+                <VBox styleClass="metric-card metric-card-accent" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                    <Label styleClass="metric-label" text="Saldo esperado" />
+                    <Label fx:id="lblSaldoEsperado" styleClass="metric-value" text="S/ 0.00" />
+                    <Label styleClass="metric-caption" text="Disponible para cierre" />
+                </VBox>
+            </GridPane>
+        </VBox>
+    </top>
+
+    <center>
+        <HBox spacing="18.0" styleClass="movement-content">
+            <VBox spacing="14.0" styleClass="panel history-panel" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                    <VBox spacing="3.0">
+                        <Label styleClass="section-title" text="Historial de movimientos" />
+                        <Label styleClass="section-subtitle" text="Consulta los ingresos, egresos y registros asociados a la caja" />
+                    </VBox>
+
+                    <Region HBox.hgrow="ALWAYS" />
+
+                    <DatePicker fx:id="dpFechaMovimiento" prefWidth="150.0" />
+                    <ComboBox fx:id="cbFiltroTipo" prefWidth="150.0" promptText="Tipo" />
+                    <Button onAction="#btnActualizar" styleClass="secondary-button" text="Actualizar" />
+                </HBox>
+
+                <TableView fx:id="tblMovimientos" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colHora" prefWidth="95.0" text="Hora" />
+                        <TableColumn fx:id="colTipo" prefWidth="125.0" text="Tipo" />
+                        <TableColumn fx:id="colDescripcion" prefWidth="430.0" text="Descripcion" />
+                        <TableColumn fx:id="colUsuario" prefWidth="170.0" text="Usuario" />
+                        <TableColumn fx:id="colMonto" prefWidth="140.0" text="Monto" />
+                        <TableColumn fx:id="colEstado" prefWidth="120.0" text="Estado" />
+                    </columns>
+                    <placeholder>
+                        <Label styleClass="empty-label" text="Aun no hay movimientos registrados para esta caja." />
+                    </placeholder>
+                </TableView>
+            </VBox>
+
+            <VBox prefWidth="360.0" spacing="14.0">
+                <VBox spacing="14.0" styleClass="panel">
+                    <VBox spacing="3.0">
+                        <Label styleClass="section-title" text="Nuevo movimiento" />
+                        <Label styleClass="section-subtitle" text="Registra solo entradas o salidas operativas" />
+                    </VBox>
+
+                    <VBox spacing="7.0">
+                        <Label styleClass="form-label" text="Tipo de movimiento" />
+                        <ComboBox fx:id="cbTipoMovimiento" maxWidth="Infinity" promptText="Seleccionar tipo" />
+                    </VBox>
+
+                    <VBox spacing="7.0">
+                        <Label styleClass="form-label" text="Monto" />
+                        <TextField fx:id="txtMonto" promptText="S/ 0.00" />
+                    </VBox>
+
+                    <VBox spacing="7.0">
+                        <Label styleClass="form-label" text="Descripcion" />
+                        <TextArea fx:id="txtDescripcion" prefRowCount="3" promptText="Motivo del movimiento" wrapText="true" />
+                    </VBox>
+
+                    <HBox spacing="10.0">
+                        <Button maxWidth="Infinity" onAction="#btnRegistrarIngreso" styleClass="success-button" text="Ingreso" HBox.hgrow="ALWAYS" />
+                        <Button maxWidth="Infinity" onAction="#btnRegistrarEgreso" styleClass="danger-button" text="Egreso" HBox.hgrow="ALWAYS" />
+                    </HBox>
+                </VBox>
+
+                <VBox spacing="14.0" styleClass="panel">
+                    <VBox spacing="3.0">
+                        <Label styleClass="section-title" text="Control de turno" />
+                        <Label styleClass="section-subtitle" text="Apertura, conteo y cierre de caja" />
+                    </VBox>
+
+                    <GridPane hgap="10.0" vgap="10.0">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                        </rowConstraints>
+
+                        <VBox styleClass="cash-count-box" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label styleClass="count-label" text="Billetes" />
+                            <Label fx:id="lblBilletes" styleClass="count-value" text="S/ 0.00" />
+                        </VBox>
+                        <VBox styleClass="cash-count-box" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label styleClass="count-label" text="Monedas" />
+                            <Label fx:id="lblMonedas" styleClass="count-value" text="S/ 0.00" />
+                        </VBox>
+                    </GridPane>
+
+                    <VBox spacing="8.0">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label styleClass="balance-label" text="Efectivo contado" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label fx:id="lblEfectivoContado" styleClass="balance-value" text="S/ 0.00" />
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT">
+                            <Label styleClass="balance-label" text="Diferencia" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label fx:id="lblDiferencia" styleClass="balance-value success-text" text="S/ 0.00" />
+                        </HBox>
+                    </VBox>
+
+                    <StackPane minHeight="8.0" styleClass="progress-track">
+                        <Region maxWidth="310.0" minHeight="8.0" styleClass="progress-fill" StackPane.alignment="CENTER_LEFT" />
+                    </StackPane>
+
+                    <Separator />
+
+                    <Button maxWidth="Infinity" onAction="#btnAbrirCaja" styleClass="secondary-button" text="Abrir caja" />
+                    <Button maxWidth="Infinity" onAction="#btnCerrarCaja" styleClass="dark-button" text="Cerrar turno" />
+                </VBox>
+            </VBox>
+        </HBox>
+    </center>
+</BorderPane>

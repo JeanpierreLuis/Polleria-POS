@@ -48,9 +48,8 @@ public class Pedidos {
 
     public enum EstadoPedido {
         PENDIENTE,
-        RECIBIDO,
         PREPARANDO,
         LISTO,
-        ENTREGADO
+        ANULADO
     }
 }

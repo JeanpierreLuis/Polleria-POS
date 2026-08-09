@@ -3,7 +3,6 @@ package com.restaurantPos.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,7 +15,7 @@ import java.time.LocalDateTime;
 public class Ventas {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_ventas;
+    private Long id_venta;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pedido")
@@ -33,4 +32,14 @@ public class Ventas {
     private Double total;
 
     private LocalDateTime fecha;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado_pago")
+    private EstadoPago estadopago;
+
+    public enum EstadoPago {
+        PENDIENTE,
+        PAGADO,
+        CANCELADO
+    }
 }

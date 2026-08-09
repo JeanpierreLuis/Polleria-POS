@@ -6,4 +6,5 @@ public class PathsCss {
     public static final String CSS_ORDERS = "/styles/orders.css";
     public static final String CSS_KITCHEN = "/styles/kitchen.css";
     public static final String CSS_WAITER = "/styles/waiter.css";
+    public static final String CSS_CAJA = "/styles/caja.css";
 }
