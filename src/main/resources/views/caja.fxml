@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -16,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="820.0" prefWidth="1360.0" styleClass="cash-root" stylesheets="@../styles/caja.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurantPos.controllers.CajaController">
+<BorderPane prefHeight="820.0" prefWidth="1440.0" styleClass="cash-root"  xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurantPos.controllers.CajaController">
 
     <top>
         <VBox spacing="16.0" styleClass="cash-header">
@@ -27,13 +28,18 @@
             <HBox alignment="CENTER_LEFT" spacing="16.0">
                 <VBox spacing="3.0">
                     <Label styleClass="page-title" text="Caja" />
-                    <Label styleClass="page-subtitle" text="Cobro de pedidos y generacion de boletas" />
+                    <Label styleClass="page-subtitle" text="Cobro de pedidos listos, registro de venta y emision de ticket" />
                 </VBox>
 
                 <Region HBox.hgrow="ALWAYS" />
 
                 <VBox alignment="CENTER_RIGHT" spacing="3.0">
-                    <Label styleClass="header-label" text="Caja" />
+                    <Label styleClass="header-label" text="Caja activa" />
+                    <Label fx:id="lblCajaActiva" styleClass="header-value" text="-" />
+                </VBox>
+
+                <VBox alignment="CENTER_RIGHT" spacing="3.0">
+                    <Label styleClass="header-label" text="Estado" />
                     <Label fx:id="lblEstadoCajaBoleta" styleClass="header-value" text="Lista para cobrar" />
                 </VBox>
 
@@ -52,27 +58,27 @@
                 </rowConstraints>
 
                 <VBox styleClass="metric-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                    <Label styleClass="metric-label" text="Pedidos pendientes" />
+                    <Label styleClass="metric-label" text="Pedidos listos" />
                     <Label fx:id="lblPedidosPendientes" styleClass="metric-value" text="0" />
-                    <Label styleClass="metric-caption" text="Listos para cobrar" />
+                    <Label styleClass="metric-caption" text="Pendientes de cobro" />
                 </VBox>
 
                 <VBox styleClass="metric-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
                     <Label styleClass="metric-label" text="Pedido seleccionado" />
                     <Label fx:id="lblPedidoSeleccionado" styleClass="metric-value" text="-" />
-                    <Label styleClass="metric-caption" text="Resumen visible en la boleta" />
+                    <Label styleClass="metric-caption" text="Detalle cargado para venta" />
                 </VBox>
 
                 <VBox styleClass="metric-card" GridPane.columnIndex="2" GridPane.rowIndex="0">
                     <Label styleClass="metric-label" text="Metodo de pago" />
                     <Label fx:id="lblMetodoPagoResumen" styleClass="metric-value metric-medium" text="-" />
-                    <Label styleClass="metric-caption" text="Se registra junto con la venta" />
+                    <Label styleClass="metric-caption" text="Requerido para registrar" />
                 </VBox>
 
                 <VBox styleClass="metric-card metric-card-accent" GridPane.columnIndex="3" GridPane.rowIndex="0">
                     <Label styleClass="metric-label" text="Total a cobrar" />
                     <Label fx:id="lblTotalCobroResumen" styleClass="metric-value" text="S/ 0.00" />
-                    <Label styleClass="metric-caption" text="Importe final de la boleta" />
+                    <Label styleClass="metric-caption" text="Importe final del pedido" />
                 </VBox>
             </GridPane>
         </VBox>
@@ -83,37 +89,36 @@
             <VBox spacing="14.0" styleClass="panel orders-panel" HBox.hgrow="ALWAYS">
                 <HBox alignment="CENTER_LEFT" spacing="12.0">
                     <VBox spacing="3.0">
-                        <Label styleClass="section-title" text="Pedidos por cobrar" />
-                        <Label styleClass="section-subtitle" text="Selecciona un pedido entregado para emitir su boleta" />
+                        <Label styleClass="section-title" text="Pedidos listos para cobrar" />
+                        <Label styleClass="section-subtitle" text="Pedidos con estado LISTO y sin venta pagada registrada" />
                     </VBox>
 
-                    <Region prefHeight="43.0" prefWidth="60.0" HBox.hgrow="ALWAYS" />
+                    <Region HBox.hgrow="ALWAYS" />
 
-                    <TextField fx:id="txtBuscarPedido" prefWidth="230.0" promptText="Buscar pedido, cliente o mesa" />
-                    <ComboBox fx:id="cbFiltroPedidoEstado" prefWidth="150.0" promptText="Estado de Pago" />
-                    <Button fx:id="btnActualizarPedidos" styleClass="secondary-button" text="Actualizar" />
+                    <TextField fx:id="txtBuscarPedido" prefWidth="250.0" promptText="Buscar pedido, cliente o mesa" />
+                    <Button fx:id="btnActualizarPedidos" onAction="#btnActualizarPedidos" styleClass="secondary-button" text="Actualizar" />
                 </HBox>
 
                 <TableView fx:id="tblPedidosCaja" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colPedidoNumero" prefWidth="86.0" text="Pedido" />
-                        <TableColumn fx:id="colPedidoHora" prefWidth="86.0" text="Hora" />
-                        <TableColumn fx:id="colPedidoCliente" prefWidth="210.0" text="Cliente" />
+                        <TableColumn fx:id="colPedidoNumero" prefWidth="82.0" text="Pedido" />
+                        <TableColumn fx:id="colPedidoHora" prefWidth="82.0" text="Hora" />
+                        <TableColumn fx:id="colPedidoCliente" prefWidth="190.0" text="Cliente" />
                         <TableColumn fx:id="colPedidoMesa" prefWidth="96.0" text="Mesa" />
-                        <TableColumn fx:id="colPedidoTipo" prefWidth="112.0" text="Tipo" />
-                        <TableColumn fx:id="colPedidoEstado" prefWidth="120.0" text="Estado" />
-                        <TableColumn fx:id="colPedidoTotal" prefWidth="130.0" text="Total" />
+                        <TableColumn fx:id="colPedidoTipo" prefWidth="105.0" text="Tipo" />
+                        <TableColumn fx:id="colPedidoEstado" prefWidth="108.0" text="Estado" />
+                        <TableColumn fx:id="colPedidoTotal" prefWidth="118.0" text="Total" />
                     </columns>
                     <placeholder>
-                        <Label styleClass="empty-label" text="No hay pedidos pendientes de cobro." />
+                        <Label styleClass="empty-label" text="No hay pedidos listos para cobrar." />
                     </placeholder>
                 </TableView>
             </VBox>
 
             <VBox prefWidth="430.0" spacing="14.0" styleClass="panel receipt-panel">
                 <VBox spacing="3.0">
-                    <Label styleClass="section-title" text="Boleta" />
-                    <Label styleClass="section-subtitle" text="Detalle preparado para generar el comprobante" />
+                    <Label styleClass="section-title" text="Detalle del pedido" />
+                    <Label styleClass="section-subtitle" text="Productos incluidos en el comprobante" />
                 </VBox>
 
                 <GridPane hgap="10.0" styleClass="receipt-summary" vgap="10.0">
@@ -124,27 +129,36 @@
                     <rowConstraints>
                         <RowConstraints />
                         <RowConstraints />
+                        <RowConstraints />
                     </rowConstraints>
 
                     <VBox styleClass="summary-box" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Label styleClass="summary-label" text="Venta" />
+                        <Label fx:id="lblBoletaVenta" styleClass="summary-value" text="-" />
+                    </VBox>
+                    <VBox styleClass="summary-box" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label styleClass="summary-label" text="Estado venta" />
+                        <Label fx:id="lblBoletaEstadoVenta" styleClass="summary-value" text="-" />
+                    </VBox>
+                    <VBox styleClass="summary-box" GridPane.columnIndex="0" GridPane.rowIndex="1">
                         <Label styleClass="summary-label" text="Pedido" />
                         <Label fx:id="lblBoletaPedido" styleClass="summary-value" text="-" />
                     </VBox>
-                    <VBox styleClass="summary-box" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <VBox styleClass="summary-box" GridPane.columnIndex="1" GridPane.rowIndex="1">
                         <Label styleClass="summary-label" text="Cliente" />
                         <Label fx:id="lblBoletaCliente" styleClass="summary-value" text="-" />
                     </VBox>
-                    <VBox styleClass="summary-box" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <VBox styleClass="summary-box" GridPane.columnIndex="0" GridPane.rowIndex="2">
                         <Label styleClass="summary-label" text="Mesa" />
                         <Label fx:id="lblBoletaMesa" styleClass="summary-value" text="-" />
                     </VBox>
-                    <VBox styleClass="summary-box" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <VBox styleClass="summary-box" GridPane.columnIndex="1" GridPane.rowIndex="2">
                         <Label styleClass="summary-label" text="Cajero" />
                         <Label fx:id="lblBoletaCajero" styleClass="summary-value" text="-" />
                     </VBox>
                 </GridPane>
 
-                <TableView fx:id="tblDetalleBoleta" VBox.vgrow="ALWAYS">
+                <TableView fx:id="tblDetalleBoleta" prefHeight="260.0" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="colBoletaProducto" prefWidth="190.0" text="Producto" />
                         <TableColumn fx:id="colBoletaCantidad" prefWidth="62.0" text="Cant." />
@@ -169,10 +183,17 @@
                     </HBox>
                     <Separator />
                     <HBox alignment="CENTER_LEFT">
-                        <Label styleClass="grand-total-label" text="Total a cobrar" />
+                        <Label styleClass="grand-total-label" text="Total" />
                         <Region HBox.hgrow="ALWAYS" />
                         <Label fx:id="lblBoletaTotal" styleClass="grand-total-value" text="S/ 0.00" />
                     </HBox>
+                </VBox>
+            </VBox>
+
+            <VBox prefWidth="330.0" spacing="14.0" styleClass="panel payment-panel">
+                <VBox spacing="3.0">
+                    <Label styleClass="section-title" text="Cobro y ticket" />
+                    <Label styleClass="section-subtitle" text="Registra la venta antes de emitir el comprobante" />
                 </VBox>
 
                 <VBox spacing="7.0">
@@ -180,10 +201,14 @@
                     <ComboBox fx:id="cbMetodoPago" maxWidth="Infinity" promptText="Seleccionar metodo" />
                 </VBox>
 
+                <Button fx:id="btnRegistrarVenta" maxWidth="Infinity" onAction="#btnRegistrarVenta" styleClass="primary-button" text="Registrar venta" />
+
                 <HBox spacing="10.0">
-                    <Button fx:id="btnVistaPreviaBoleta" maxWidth="Infinity" styleClass="secondary-button" text="Vista previa" HBox.hgrow="ALWAYS" />
-                    <Button fx:id="btnGenerarBoleta" maxWidth="Infinity" styleClass="primary-button" text="Generar boleta" HBox.hgrow="ALWAYS" />
+                    <Button fx:id="btnVistaPreviaBoleta" maxWidth="Infinity" onAction="#btnVistaPreviaBoleta" styleClass="secondary-button" text="Vista previa" HBox.hgrow="ALWAYS" />
+                    <Button fx:id="btnGenerarBoleta" maxWidth="Infinity" onAction="#btnGenerarBoleta" styleClass="dark-button" text="Generar ticket" HBox.hgrow="ALWAYS" />
                 </HBox>
+
+                <TextArea fx:id="txtTicketPreview" editable="false" prefHeight="430.0" promptText="La vista previa del ticket aparecera aqui." styleClass="ticket-preview" wrapText="true" VBox.vgrow="ALWAYS" />
             </VBox>
         </HBox>
     </center>

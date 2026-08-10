@@ -83,51 +83,6 @@
                     <padding>
                         <Insets bottom="24" left="24" right="24" top="24" />
                     </padding>
-
-                    <VBox spacing="12" styleClass="order-ticket urgent-ticket">
-                        <HBox alignment="CENTER_LEFT" spacing="10">
-                            <Label styleClass="ticket-number" text="#1024" />
-                            <Region HBox.hgrow="ALWAYS" />
-                            <Label styleClass="status-pill pending-pill" text="Pendiente" />
-                        </HBox>
-                        <Label styleClass="ticket-table" text="Mesa 07" />
-                        <Label styleClass="ticket-time danger-text" text="Hace 18 min" />
-                        <Separator />
-                        <Label styleClass="ticket-item" text="2 x Pollo a la brasa 1/4" />
-                        <Label styleClass="ticket-item" text="1 x Papas familiares" />
-                        <Label styleClass="ticket-item" text="2 x Chicha morada" />
-                        <Button maxWidth="Infinity" onAction="#btnVerPedido" styleClass="secondary-button" text="Ver detalle" />
-                    </VBox>
-
-                    <VBox spacing="12" styleClass="order-ticket active-ticket">
-                        <HBox alignment="CENTER_LEFT" spacing="10">
-                            <Label styleClass="ticket-number" text="#1025" />
-                            <Region HBox.hgrow="ALWAYS" />
-                            <Label styleClass="status-pill progress-pill" text="En preparacion" />
-                        </HBox>
-                        <Label styleClass="ticket-table" text="Mesa 03" />
-                        <Label styleClass="ticket-time warning-text" text="Hace 11 min" />
-                        <Separator />
-                        <Label styleClass="ticket-item" text="1 x Parrilla personal" />
-                        <Label styleClass="ticket-item" text="1 x Ensalada fresca" />
-                        <Label styleClass="ticket-item" text="Sin ajies" />
-                        <Button maxWidth="Infinity" onAction="#btnVerPedido" styleClass="secondary-button" text="Ver detalle" />
-                    </VBox>
-
-                    <VBox spacing="12" styleClass="order-ticket">
-                        <HBox alignment="CENTER_LEFT" spacing="10">
-                            <Label styleClass="ticket-number" text="#1026" />
-                            <Region HBox.hgrow="ALWAYS" />
-                            <Label styleClass="status-pill ready-pill" text="Listo" />
-                        </HBox>
-                        <Label styleClass="ticket-table" text="Para llevar" />
-                        <Label styleClass="ticket-time success-text" text="Hace 5 min" />
-                        <Separator />
-                        <Label styleClass="ticket-item" text="1 x Mostrito" />
-                        <Label styleClass="ticket-item" text="1 x Gaseosa 500 ml" />
-                        <Label styleClass="ticket-item" text="Empacar con cubiertos" />
-                        <Button maxWidth="Infinity" onAction="#btnVerPedido" styleClass="secondary-button" text="Ver detalle" />
-                    </VBox>
                 </FlowPane>
             </content>
         </ScrollPane>

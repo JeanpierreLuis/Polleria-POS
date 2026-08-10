@@ -14,6 +14,8 @@ public interface PedidosRepository  extends JpaRepository<Pedidos, Long> {
 
     @Query("""
         SELECT DISTINCT p FROM Pedidos p 
+        LEFT JOIN FETCH p.cliente
+        LEFT JOIN FETCH p.mesa
         LEFT JOIN FETCH p.detalles d
         LEFT JOIN FETCH d.producto
         WHERE p.estado IN :estados

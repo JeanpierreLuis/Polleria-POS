@@ -3,6 +3,7 @@ package com.restaurantPos.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,7 +30,7 @@ public class Ventas {
     @JoinColumn(name = "id_cajero")
     private Usuarios usuario;
 
-    private Double total;
+    private BigDecimal total;
 
     private LocalDateTime fecha;
 
@@ -37,9 +38,19 @@ public class Ventas {
     @Column(name = "estado_pago")
     private EstadoPago estadopago;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "metodo_pago")
+    private MetodoPago metodoPago;
+
     public enum EstadoPago {
         PENDIENTE,
         PAGADO,
         CANCELADO
+    }
+
+    public enum MetodoPago{
+        EFECTIVO,
+        YAPE,
+        TARJETA
     }
 }

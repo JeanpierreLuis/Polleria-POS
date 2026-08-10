@@ -162,11 +162,6 @@ public class KitchenController {
     }
 
     @FXML
-    void btnVerPedido(ActionEvent event) {
-        lblPedidoSeleccionado.setText("Pedido seleccionado");
-    }
-
-    @FXML
     void btnMarcarRecibido(ActionEvent event) {
         lblEstadoPedido.setText("Recibido");
     }
