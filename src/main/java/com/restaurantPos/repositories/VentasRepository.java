@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface VentasRepository extends JpaRepository<Ventas, Long> {
     boolean existsByPedidoAndEstadopago(Pedidos pedido, Ventas.EstadoPago estadopago);
 
-    Optional<Ventas> findFirstByPedidoOrderByFechaDesc(Pedidos pedido);
+    Optional<Ventas> findByPedidoAndEstadopago(Pedidos pedido, Ventas.EstadoPago estadoPago);
 }

@@ -188,8 +188,6 @@ Entidades principales incluidas:
 - `Productos`
 - `Categorias`
 - `Ventas`
-- `Caja`
-- `MovimientoCaja`
 - `MovimientoInventario`
 
 ## Pruebas

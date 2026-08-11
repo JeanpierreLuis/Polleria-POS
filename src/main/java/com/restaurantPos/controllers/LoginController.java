@@ -70,7 +70,9 @@ public class LoginController {
                 case "MOZO":
                     navigationService.changeScene(stage, Paths.ORDERS_PAGE, PathsCss.CSS_ORDERS);
                     break;
-
+                case "CAJERO":
+                    navigationService.changeScene(stage, Paths.CAJA_PAGE, PathsCss.CSS_CAJA);
+                    break;
                 default:
                     lblMensaje.setText(null);
             }

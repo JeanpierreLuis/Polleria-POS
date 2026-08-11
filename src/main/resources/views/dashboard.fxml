@@ -43,8 +43,8 @@
 
             <VBox spacing="8">
                 <Separator opacity="0.22" />
-                <Label styleClass="sidebar-footer" text="Turno actual" />
-                <Label style="-fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: 800;" text="Caja principal abierta" />
+                <Label styleClass="sidebar-footer" text="Sesion actual" />
+                <Label style="-fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: 800;" text="Ventas y pedidos" />
                 <Label styleClass="sidebar-footer" text="Sistema listo para operar" />
             </VBox>
         </VBox>
@@ -117,7 +117,7 @@
                         <HBox alignment="CENTER_LEFT" spacing="10">
                             <VBox spacing="2">
                                 <Label styleClass="section-title" text="Accesos rapidos" />
-                                <Label styleClass="card-caption" text="Operaciones principales del turno" />
+                                <Label styleClass="card-caption" text="Operaciones principales del sistema" />
                             </VBox>
                             <Region HBox.hgrow="ALWAYS" />
                             <Label styleClass="user-pill" text="Operativo" />
@@ -126,7 +126,7 @@
                         <GridPane hgap="12" vgap="12">
                             <Button GridPane.columnIndex="0" GridPane.rowIndex="0" maxWidth="Infinity" onAction="#btnPedidoPrincipal" styleClass="action-button" text="Nuevo pedido" />
                             <Button GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity" onAction="#btnProductoPrincipal" styleClass="action-button" text="Gestionar productos" />
-                            <Button GridPane.columnIndex="0" GridPane.rowIndex="1" maxWidth="Infinity" onAction="#btnCajaPrincipal" styleClass="action-button" text="Movimiento de caja" />
+                            <Button GridPane.columnIndex="0" GridPane.rowIndex="1" maxWidth="Infinity" onAction="#btnCajaPrincipal" styleClass="action-button" text="Caja" />
                             <Button GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="Infinity" onAction="#btnReportesPrincipal" styleClass="action-button" text="Ver reportes" />
 
                             <columnConstraints>
@@ -151,7 +151,7 @@
                     </VBox>
 
                     <VBox prefWidth="330" spacing="16" style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #e5e7eb; -fx-border-radius: 8; -fx-padding: 22;">
-                        <Label styleClass="section-title" text="Rendimiento del turno" />
+                        <Label styleClass="section-title" text="Rendimiento del dia" />
 
                         <VBox spacing="12">
                             <VBox spacing="6">
@@ -194,7 +194,7 @@
                             <Label styleClass="card-title" text="Alertas" />
                             <Label styleClass="card-caption" text="Stock bajo: pollo broaster" />
                             <Label styleClass="card-caption" text="Mesa 08 supera 45 min" />
-                            <Label styleClass="card-caption" text="Caja pendiente de arqueo" />
+                            <Label styleClass="card-caption" text="Ventas pendientes de revision" />
                         </VBox>
                     </VBox>
                 </HBox>

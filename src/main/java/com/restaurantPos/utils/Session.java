@@ -11,7 +11,7 @@ public class Session {
     private static Usuarios usuarioActual;
 
     public static void setUsuarioActual(Usuarios usuario) {
-        usuarioActual = usuarioActual;
+        usuarioActual = usuario;
     }
 
     public static void limpiarSesion() {

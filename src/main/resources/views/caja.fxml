@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="820.0" prefWidth="1440.0" styleClass="cash-root"  xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurantPos.controllers.CajaController">
+<BorderPane prefHeight="820.0" prefWidth="1440.0" styleClass="cash-root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurantPos.controllers.CajaController">
 
     <top>
         <VBox spacing="16.0" styleClass="cash-header">
@@ -34,16 +34,9 @@
                 <Region HBox.hgrow="ALWAYS" />
 
                 <VBox alignment="CENTER_RIGHT" spacing="3.0">
-                    <Label styleClass="header-label" text="Caja activa" />
-                    <Label fx:id="lblCajaActiva" styleClass="header-value" text="-" />
+                    <Label styleClass="header-label" text="Modulo" />
+                    <Label styleClass="header-value" text="Cobro de pedidos" />
                 </VBox>
-
-                <VBox alignment="CENTER_RIGHT" spacing="3.0">
-                    <Label styleClass="header-label" text="Estado" />
-                    <Label fx:id="lblEstadoCajaBoleta" styleClass="header-value" text="Lista para cobrar" />
-                </VBox>
-
-                <Label fx:id="lblTurnoBoleta" styleClass="status-pill open-pill" text="Turno activo" />
             </HBox>
 
             <GridPane hgap="14.0" vgap="14.0">

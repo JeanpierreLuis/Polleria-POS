@@ -23,10 +23,6 @@ public class Ventas {
     private Pedidos pedido;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_caja")
-    private Caja caja;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cajero")
     private Usuarios usuario;
 

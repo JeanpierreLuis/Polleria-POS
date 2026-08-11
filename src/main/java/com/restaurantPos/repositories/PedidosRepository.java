@@ -37,4 +37,18 @@ public interface PedidosRepository  extends JpaRepository<Pedidos, Long> {
             @Param("inicioDia") LocalDateTime inicioDia,
             @Param("finDia") LocalDateTime finDia
     );
+
+    @Query("""
+            SELECT DISTINCT p
+            FROM Pedidos p
+            LEFT JOIN FETCH p.cliente
+            LEFT JOIN FETCH p.mesa
+            LEFT JOIN FETCH p.detalles d
+            LEFT JOIN FETCH d.producto
+            WHERE p.fecha BETWEEN :inicio AND :fin
+""")
+    List<Pedidos>findTodosPedidos(
+            @Param("inicio") LocalDateTime inicio,
+            @Param("fin") LocalDateTime fin
+    );
 }

@@ -1,13 +1,12 @@
 package com.restaurantPos.controllers;
 
-import com.restaurantPos.models.Caja;
 import com.restaurantPos.models.DetallePedido;
 import com.restaurantPos.models.Pedidos;
 import com.restaurantPos.models.Usuarios;
 import com.restaurantPos.models.Ventas;
-import com.restaurantPos.repositories.CajaRepository;
 import com.restaurantPos.repositories.PedidosRepository;
 import com.restaurantPos.repositories.VentasRepository;
+import com.restaurantPos.services.ImpresoraService;
 import com.restaurantPos.utils.Session;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -45,7 +44,7 @@ public class CajaController {
 
     private final PedidosRepository pedidosRepository;
     private final VentasRepository ventasRepository;
-    private final CajaRepository cajaRepository;
+    private final ImpresoraService impresoraService;
 
     private final ObservableList<Pedidos> pedidosListos = FXCollections.observableArrayList();
     private final ObservableList<DetallePedido> detallePedido = FXCollections.observableArrayList();
@@ -53,7 +52,6 @@ public class CajaController {
     private FilteredList<Pedidos> pedidosFiltrados;
     private Pedidos pedidoSeleccionado;
     private Ventas ventaRegistrada;
-    private Caja cajaActiva;
 
     @FXML
     private TableView<DetallePedido> tblDetalleBoleta;
@@ -137,12 +135,6 @@ public class CajaController {
     private Label lblBoletaVenta;
 
     @FXML
-    private Label lblCajaActiva;
-
-    @FXML
-    private Label lblEstadoCajaBoleta;
-
-    @FXML
     private Label lblMetodoPagoResumen;
 
     @FXML
@@ -155,9 +147,6 @@ public class CajaController {
     private Label lblTotalCobroResumen;
 
     @FXML
-    private Label lblTurnoBoleta;
-
-    @FXML
     private TextArea txtTicketPreview;
 
     @FXML
@@ -165,10 +154,6 @@ public class CajaController {
 
     @FXML
     public void initialize() {
-        if (!esVistaCaja()) {
-            return;
-        }
-
         cbMetodoPago.setItems(FXCollections.observableArrayList(Ventas.MetodoPago.values()));
         cbMetodoPago.valueProperty().addListener((observable, oldValue, newValue) ->
                 lblMetodoPagoResumen.setText(newValue == null ? "-" : formatearMetodoPago(newValue)));
@@ -219,27 +204,22 @@ public class CajaController {
         LocalDateTime inicioDia = LocalDate.now().atStartOfDay();
         LocalDateTime finDia = LocalDate.now().atTime(23, 59, 59);
 
-        List<Pedidos> pedidos = pedidosRepository.findByEstadoConDetalles(
-                List.of(Pedidos.EstadoPedido.LISTO), inicioDia, finDia);
+        List<Pedidos> pedidos = pedidosRepository.findTodosPedidos(inicioDia, finDia
+        );
 
-        pedidosListos.setAll(pedidos.stream()
-                .filter(pedido -> !ventasRepository.existsByPedidoAndEstadopago(pedido, Ventas.EstadoPago.PAGADO))
-                .toList());
+        pedidosListos.setAll(pedidos);
 
         lblPedidosPendientes.setText(String.valueOf(pedidosListos.size()));
         tblPedidosCaja.refresh();
     }
 
     private void seleccionarPedido(Pedidos pedido) {
-        pedidoSeleccionado = pedido;
-        ventaRegistrada = null;
-        txtTicketPreview.clear();
-        btnGenerarBoleta.setDisable(true);
 
         if (pedido == null) {
             limpiarSeleccion();
             return;
         }
+        pedidoSeleccionado = pedido;
 
         detallePedido.setAll(pedido.getDetalles());
         lblPedidoSeleccionado.setText("#" + pedido.getId_pedido());
@@ -248,9 +228,43 @@ public class CajaController {
         lblBoletaMesa.setText(obtenerMesa(pedido));
         lblBoletaCajero.setText(obtenerCajero());
         lblBoletaVenta.setText("Pendiente");
-        lblBoletaEstadoVenta.setText("Sin registrar");
         actualizarTotales(pedido.getTotal());
-    }
+
+        boolean pagado = ventasRepository.existsByPedidoAndEstadopago(
+                pedido, Ventas.EstadoPago.PAGADO
+        );
+
+        if (pagado) {
+            lblBoletaEstadoVenta.setText("PAGADO");
+
+
+        ventaRegistrada = ventasRepository.findByPedidoAndEstadopago(
+                pedido, Ventas.EstadoPago.PAGADO).orElse(null);
+
+        if (ventaRegistrada != null) {
+            lblBoletaVenta.setText("# " + ventaRegistrada.getId_venta()
+            );
+
+        }else {
+            lblBoletaVenta.setText("Venta registrada"
+            );
+        }
+
+        btnRegistrarVenta.setDisable(true);
+        btnGenerarBoleta.setDisable(false);
+        generarTicketPreview();
+
+        }else{
+            lblBoletaEstadoVenta.setText("PEDIENTE DE PAGO"
+            );
+            ventaRegistrada = null;
+
+            btnRegistrarVenta.setDisable(false);
+            btnGenerarBoleta.setDisable(true);
+
+            txtTicketPreview.clear();
+        }
+}
 
     @FXML
     void btnActualizarPedidos(ActionEvent event) {
@@ -281,7 +295,6 @@ public class CajaController {
 
         ventaRegistrada = Ventas.builder()
                 .pedido(pedidoSeleccionado)
-                .caja(cajaActiva)
                 .usuario(Session.getUsuarioActual())
                 .total(normalizarMonto(pedidoSeleccionado.getTotal()))
                 .fecha(LocalDateTime.now())
@@ -316,35 +329,16 @@ public class CajaController {
             return;
         }
 
-        generarTicketPreview();
-        mostrarAlerta(Alert.AlertType.INFORMATION, "Ticket generado para la venta #" + ventaRegistrada.getId_venta() + ".");
-    }
-
-    @FXML
-    void btnAbrirCaja(ActionEvent event) {
-        mostrarAlerta(Alert.AlertType.INFORMATION, "La apertura de caja se gestiona desde el modulo de movimientos.");
-    }
-
-    @FXML
-    void btnActualizar(ActionEvent event) {
-        if (esVistaCaja()) {
-            cargarPedidosListos();
+        try{
+            String ticket = construirTicket();
+            impresoraService.imprimirTicket(ticket);
+            generarTicketPreview();
+            mostrarAlerta(Alert.AlertType.INFORMATION, "Ticket generado para la venta #" + ventaRegistrada.getId_venta() + ".");
+        }catch (Exception e){
+            mostrarAlerta(Alert.AlertType.ERROR, "La venta fue Registrada, pero no se pudo imprimir el ticketn\n\n"
+            + e.getMessage());
         }
-    }
 
-    @FXML
-    void btnCerrarCaja(ActionEvent event) {
-        mostrarAlerta(Alert.AlertType.INFORMATION, "El cierre de caja se gestiona desde el modulo de movimientos.");
-    }
-
-    @FXML
-    void btnRegistrarEgreso(ActionEvent event) {
-        mostrarAlerta(Alert.AlertType.INFORMATION, "Los egresos se registran desde el modulo de movimientos.");
-    }
-
-    @FXML
-    void btnRegistrarIngreso(ActionEvent event) {
-        mostrarAlerta(Alert.AlertType.INFORMATION, "Los ingresos manuales se registran desde el modulo de movimientos.");
     }
 
     private void limpiarSeleccion() {
@@ -369,10 +363,6 @@ public class CajaController {
         btnGenerarBoleta.setDisable(true);
     }
 
-    private boolean esVistaCaja() {
-        return tblPedidosCaja != null && cbMetodoPago != null;
-    }
-
     private void actualizarTotales(BigDecimal totalPedido) {
         BigDecimal total = normalizarMonto(totalPedido);
         BigDecimal subtotal = total.divide(BigDecimal.ONE.add(IGV_RATE), 2, RoundingMode.HALF_UP);
@@ -389,36 +379,7 @@ public class CajaController {
             txtTicketPreview.clear();
             return;
         }
-
-        StringBuilder ticket = new StringBuilder();
-        ticket.append("RESTAURANT POS\n");
-        ticket.append("Ticket de venta\n");
-        ticket.append("------------------------------\n");
-        ticket.append("Venta: ").append(ventaRegistrada == null ? "Pendiente" : "#" + ventaRegistrada.getId_venta()).append('\n');
-        ticket.append("Pedido: #").append(pedidoSeleccionado.getId_pedido()).append('\n');
-        ticket.append("Fecha: ").append(LocalDateTime.now().format(TICKET_FORMATTER)).append('\n');
-        ticket.append("Caja: ").append(cajaActiva == null ? "-" : "#" + cajaActiva.getId()).append('\n');
-        ticket.append("Cajero: ").append(obtenerCajero()).append('\n');
-        ticket.append("Cliente: ").append(obtenerCliente(pedidoSeleccionado)).append('\n');
-        ticket.append("Mesa: ").append(obtenerMesa(pedidoSeleccionado)).append('\n');
-        ticket.append("Pago: ").append(cbMetodoPago.getValue() == null ? "-" : formatearMetodoPago(cbMetodoPago.getValue())).append('\n');
-        ticket.append("------------------------------\n");
-
-        for (DetallePedido detalle : detallePedido) {
-            ticket.append(detalle.getCantidad())
-                    .append(" x ")
-                    .append(detalle.getProducto().getNombre())
-                    .append("  ")
-                    .append(formatearMoneda(BigDecimal.valueOf(detalle.getSubtotal())))
-                    .append('\n');
-        }
-
-        ticket.append("------------------------------\n");
-        ticket.append("Subtotal: ").append(lblBoletaSubtotal.getText()).append('\n');
-        ticket.append("IGV: ").append(lblBoletaIgv.getText()).append('\n');
-        ticket.append("Total: ").append(lblBoletaTotal.getText()).append('\n');
-
-        txtTicketPreview.setText(ticket.toString());
+        txtTicketPreview.setText(construirTicket());
     }
 
     private boolean coincideBusqueda(Pedidos pedido, String texto) {
@@ -490,5 +451,44 @@ public class CajaController {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+
+    private String construirTicket(){
+        if (pedidoSeleccionado == null) {
+            return "";
+        }
+
+        StringBuilder ticket = new StringBuilder();
+        ticket.append("RESTAURANT POS\n");
+        ticket.append("Ticket de venta\n");
+        ticket.append("------------------------------\n");
+        ticket.append("Venta: ").append(ventaRegistrada == null ? "Pendiente" : "#" + ventaRegistrada.getId_venta()).append('\n');
+        ticket.append("Pedido: #").append(pedidoSeleccionado.getId_pedido()).append('\n');
+        ticket.append("Fecha: ").append(LocalDateTime.now().format(TICKET_FORMATTER)).append('\n');
+        ticket.append("Cajero: ").append(obtenerCajero()).append('\n');
+        ticket.append("Cliente: ").append(obtenerCliente(pedidoSeleccionado)).append('\n');
+        ticket.append("Mesa: ").append(obtenerMesa(pedidoSeleccionado)).append('\n');
+        ticket.append("Pago: ").append(cbMetodoPago.getValue() == null ? "-" : formatearMetodoPago(cbMetodoPago.getValue())).append('\n');
+        ticket.append("------------------------------\n");
+
+        for (DetallePedido detalle : detallePedido) {
+            ticket.append(detalle.getCantidad())
+                    .append(" x ")
+                    .append(detalle.getProducto().getNombre())
+                    .append("  ")
+                    .append(formatearMoneda(BigDecimal.valueOf(detalle.getSubtotal())))
+                    .append('\n');
+        }
+
+        ticket.append("------------------------------\n");
+        ticket.append("Subtotal: ").append(lblBoletaSubtotal.getText()).append('\n');
+        ticket.append("IGV: ").append(lblBoletaIgv.getText()).append('\n');
+        ticket.append("Total: ").append(lblBoletaTotal.getText()).append('\n');
+
+        ticket.append("================================\n");
+        ticket.append("      GRACIAS POR SU COMPRA\n");
+        ticket.append("\n\n\n");
+
+        return ticket.toString();
     }
 }
