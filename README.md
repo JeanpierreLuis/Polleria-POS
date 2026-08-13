@@ -75,16 +75,16 @@ La configuracion principal esta en:
 src/main/resources/application.properties
 ```
 
-Valores por defecto para desarrollo:
+Ejemplo de configuracion para desarrollo:
 
 ```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/polleria_pos
-spring.datasource.username=admin
-spring.datasource.password=admin123
+spring.datasource.url=${DB_URL}
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
 spring.jpa.hibernate.ddl-auto=update
 ```
 
-Estas credenciales estan pensadas para entorno local. Para produccion, usa variables de entorno, perfiles de Spring o un gestor de secretos.
+No documentes credenciales reales en este archivo. Usa variables de entorno, perfiles de Spring o un gestor de secretos segun el entorno.
 
 ## Ejecucion Local
 
@@ -167,12 +167,12 @@ restaurantPos/
 
 ## Base de Datos
 
-El servicio PostgreSQL se define en `docker-compose.yml`:
+El servicio PostgreSQL se define en `docker-compose.yml`. Mantén nombres de base de datos, usuarios y contrasenas fuera del README publico:
 
 ```yaml
-POSTGRES_DB: polleria_pos
-POSTGRES_USER: admin
-POSTGRES_PASSWORD: admin123
+POSTGRES_DB: <database_name>
+POSTGRES_USER: <database_user>
+POSTGRES_PASSWORD: <database_password>
 ```
 
 Hibernate esta configurado con `spring.jpa.hibernate.ddl-auto=update`, por lo que puede actualizar el esquema automaticamente durante el desarrollo segun las entidades JPA.

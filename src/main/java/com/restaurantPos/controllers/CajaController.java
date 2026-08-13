@@ -38,7 +38,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CajaController {
 
-    private static final BigDecimal IGV_RATE = BigDecimal.valueOf(0.18);
+    private static final BigDecimal IGV_RATE = BigDecimal.valueOf(0);
+    private static final int TICKET_WIDTH =48;
     private static final DateTimeFormatter HORA_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     private static final DateTimeFormatter TICKET_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
@@ -459,36 +460,132 @@ public class CajaController {
         }
 
         StringBuilder ticket = new StringBuilder();
-        ticket.append("RESTAURANT POS\n");
-        ticket.append("Ticket de venta\n");
-        ticket.append("------------------------------\n");
-        ticket.append("Venta: ").append(ventaRegistrada == null ? "Pendiente" : "#" + ventaRegistrada.getId_venta()).append('\n');
-        ticket.append("Pedido: #").append(pedidoSeleccionado.getId_pedido()).append('\n');
-        ticket.append("Fecha: ").append(LocalDateTime.now().format(TICKET_FORMATTER)).append('\n');
-        ticket.append("Cajero: ").append(obtenerCajero()).append('\n');
-        ticket.append("Cliente: ").append(obtenerCliente(pedidoSeleccionado)).append('\n');
-        ticket.append("Mesa: ").append(obtenerMesa(pedidoSeleccionado)).append('\n');
-        ticket.append("Pago: ").append(cbMetodoPago.getValue() == null ? "-" : formatearMetodoPago(cbMetodoPago.getValue())).append('\n');
-        ticket.append("------------------------------\n");
+        ticket.append(centrarTexto("RESTAURANT POS")).append('\n');
+        ticket.append(centrarTexto("TICKET DE VENTA")).append('\n');
+        ticket.append(lineaSeparadora('=')).append('\n');
+        ticket.append(filaTicket("Venta", ventaRegistrada == null ? "Pendiente" : "#" + ventaRegistrada.getId_venta())).append('\n');
+        ticket.append(filaTicket("Pedido", "#" + pedidoSeleccionado.getId_pedido())).append('\n');
+        ticket.append(filaTicket("Fecha", LocalDateTime.now().format(TICKET_FORMATTER))).append('\n');
+        ticket.append(filaTicket("Cajero", obtenerCajero())).append('\n');
+        ticket.append(filaTicket("Cliente", obtenerCliente(pedidoSeleccionado))).append('\n');
+        ticket.append(filaTicket("Mesa", obtenerMesa(pedidoSeleccionado))).append('\n');
+        ticket.append(filaTicket("Pago", cbMetodoPago.getValue() == null ? "-" : formatearMetodoPago(cbMetodoPago.getValue()))).append('\n');
+        ticket.append(lineaSeparadora('-')).append('\n');
+        ticket.append(filaTicket("Cant  Producto", "Importe")).append('\n');
+        ticket.append(lineaSeparadora('-')).append('\n');
 
         for (DetallePedido detalle : detallePedido) {
-            ticket.append(detalle.getCantidad())
-                    .append(" x ")
-                    .append(detalle.getProducto().getNombre())
-                    .append("  ")
-                    .append(formatearMoneda(BigDecimal.valueOf(detalle.getSubtotal())))
-                    .append('\n');
+            agregarDetalleTicket(ticket, detalle);
         }
 
-        ticket.append("------------------------------\n");
-        ticket.append("Subtotal: ").append(lblBoletaSubtotal.getText()).append('\n');
-        ticket.append("IGV: ").append(lblBoletaIgv.getText()).append('\n');
-        ticket.append("Total: ").append(lblBoletaTotal.getText()).append('\n');
+        ticket.append(lineaSeparadora('-')).append('\n');
+        ticket.append(filaTicket("Subtotal", lblBoletaSubtotal.getText())).append('\n');
+        ticket.append(filaTicket("IGV", lblBoletaIgv.getText())).append('\n');
+        ticket.append(filaTicket("TOTAL", lblBoletaTotal.getText())).append('\n');
 
-        ticket.append("================================\n");
-        ticket.append("      GRACIAS POR SU COMPRA\n");
+        ticket.append(lineaSeparadora('=')).append('\n');
+        ticket.append(centrarTexto("GRACIAS POR SU COMPRA")).append('\n');
         ticket.append("\n\n\n");
 
         return ticket.toString();
+    }
+
+    private void agregarDetalleTicket(StringBuilder ticket, DetallePedido detalle) {
+        String cantidad = String.valueOf(detalle.getCantidad() == null ? 0 : detalle.getCantidad());
+        String producto = detalle.getProducto() == null ? "Producto" : detalle.getProducto().getNombre();
+        String importe = formatearMoneda(BigDecimal.valueOf(detalle.getSubtotal() == null ? 0 : detalle.getSubtotal()));
+        String prefijo = cantidad + " x ";
+        int anchoProducto = TICKET_WIDTH - prefijo.length() - importe.length() - 1;
+
+        if (anchoProducto < 8) {
+            ticket.append(filaTicket(prefijo.trim(), importe)).append('\n');
+            agregarLineasProducto(ticket, producto, TICKET_WIDTH);
+            return;
+        }
+
+        List<String> lineasProducto = dividirTexto(producto, anchoProducto);
+        ticket.append(rellenarDerecha(prefijo + lineasProducto.getFirst(), TICKET_WIDTH - importe.length()))
+                .append(importe)
+                .append('\n');
+
+        for (int i = 1; i < lineasProducto.size(); i++) {
+            ticket.append(rellenarDerecha(" ".repeat(prefijo.length()) + lineasProducto.get(i), TICKET_WIDTH)).append('\n');
+        }
+    }
+
+    private void agregarLineasProducto(StringBuilder ticket, String producto, int ancho) {
+        for (String linea : dividirTexto(producto, ancho)) {
+            ticket.append(linea).append('\n');
+        }
+    }
+
+    private String filaTicket(String izquierda, String derecha) {
+        String textoIzquierda = izquierda == null ? "" : izquierda.trim();
+        String textoDerecha = derecha == null ? "" : derecha.trim();
+        int espacioDisponible = TICKET_WIDTH - textoDerecha.length() - 1;
+
+        if (espacioDisponible < 4 || textoIzquierda.length() > espacioDisponible) {
+            return textoIzquierda + '\n' + rellenarIzquierda(textoDerecha, TICKET_WIDTH);
+        }
+
+        return rellenarDerecha(textoIzquierda, TICKET_WIDTH - textoDerecha.length()) + textoDerecha;
+    }
+
+    private List<String> dividirTexto(String texto, int ancho) {
+        String valor = texto == null || texto.isBlank() ? "-" : texto.trim();
+        if (valor.length() <= ancho) {
+            return List.of(valor);
+        }
+
+        java.util.ArrayList<String> lineas = new java.util.ArrayList<>();
+        StringBuilder linea = new StringBuilder();
+        for (String palabra : valor.split("\\s+")) {
+            if (linea.isEmpty()) {
+                linea.append(palabra);
+            } else if (linea.length() + 1 + palabra.length() <= ancho) {
+                linea.append(' ').append(palabra);
+            } else {
+                lineas.add(linea.toString());
+                linea.setLength(0);
+                linea.append(palabra);
+            }
+
+            while (linea.length() > ancho) {
+                lineas.add(linea.substring(0, ancho));
+                linea.delete(0, ancho);
+            }
+        }
+
+        if (!linea.isEmpty()) {
+            lineas.add(linea.toString());
+        }
+        return lineas;
+    }
+
+    private String centrarTexto(String texto) {
+        String valor = texto == null ? "" : texto.trim();
+        if (valor.length() >= TICKET_WIDTH) {
+            return valor.substring(0, TICKET_WIDTH);
+        }
+        int espaciosIzquierda = (TICKET_WIDTH - valor.length()) / 2;
+        return " ".repeat(espaciosIzquierda) + valor;
+    }
+
+    private String lineaSeparadora(char caracter) {
+        return String.valueOf(caracter).repeat(TICKET_WIDTH);
+    }
+
+    private String rellenarDerecha(String texto, int ancho) {
+        if (texto.length() >= ancho) {
+            return texto;
+        }
+        return texto + " ".repeat(ancho - texto.length());
+    }
+
+    private String rellenarIzquierda(String texto, int ancho) {
+        if (texto.length() >= ancho) {
+            return texto;
+        }
+        return " ".repeat(ancho - texto.length()) + texto;
     }
 }
