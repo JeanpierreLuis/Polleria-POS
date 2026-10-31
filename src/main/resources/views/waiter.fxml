@@ -13,12 +13,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="800.0"
-            prefWidth="1300.0"
-            styleClass="waiter-root"
-            stylesheets="@../styles/waiter.css"
-            xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="800.0" prefWidth="1300.0" fx:controller="com.restaurantPos.controllers.WaiterController" styleClass="waiter-root" stylesheets="@../styles/waiter.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
 
     <top>
         <VBox spacing="14" styleClass="waiter-header">
@@ -34,6 +29,8 @@
 
                 <Region HBox.hgrow="ALWAYS" />
 
+                <Button onAction="#btnIrOrders" styleClass="secondary-button" text="Volver a Pedidos" />
+
                 <VBox alignment="CENTER_RIGHT" spacing="3" styleClass="detail-chip">
                     <Label styleClass="chip-label" text="Ultima actualizacion" />
                     <Label fx:id="lblUltimaActualizacion" styleClass="chip-value" text="Ahora" />
@@ -41,21 +38,13 @@
             </HBox>
 
             <HBox alignment="CENTER_LEFT" spacing="12">
-                <TextField fx:id="txtBuscarPedido"
-                           prefWidth="320"
-                           promptText="Buscar por pedido, mesa o cliente" />
+                <TextField fx:id="txtBuscarPedido" prefWidth="320" promptText="Buscar por pedido, mesa o cliente" />
 
-                <ComboBox fx:id="cbFiltroEstado"
-                          prefWidth="190"
-                          promptText="Estado" />
+                <ComboBox fx:id="cbFiltroEstado" prefWidth="190" promptText="Estado" />
 
-                <ComboBox fx:id="cbFiltroMesa"
-                          prefWidth="150"
-                          promptText="Mesa" />
+                <ComboBox fx:id="cbFiltroMesa" prefWidth="150" promptText="Mesa" />
 
-                <Button fx:id="btnActualizarSeguimiento"
-                        styleClass="secondary-button"
-                        text="Actualizar" />
+                <Button fx:id="btnActualizarSeguimiento" onAction="#btnActualizarSeguimiento" styleClass="secondary-button" text="Actualizar" />
 
                 <Region HBox.hgrow="ALWAYS" />
 
@@ -76,7 +65,7 @@
 
             <VBox styleClass="metric-card">
                 <Label styleClass="metric-label" text="Enviados a cocina" />
-                <Label fx:id="lblPedidosEnviados" styleClass="metric-value" text="12" />
+                <Label fx:id="lblPedidosEnviados" styleClass="metric-value" />
             </VBox>
 
             <VBox styleClass="metric-card">
@@ -147,12 +136,12 @@
             </TableView>
 
             <HBox alignment="CENTER_LEFT" spacing="12">
-                <VBox HBox.hgrow="ALWAYS" styleClass="detail-chip">
+                <VBox styleClass="detail-chip" HBox.hgrow="ALWAYS">
                     <Label styleClass="chip-label" text="Pedido destacado" />
                     <Label fx:id="lblPedidoDestacado" styleClass="chip-value" text="#1025 - Mesa 03 en preparacion" />
                 </VBox>
 
-                <VBox HBox.hgrow="ALWAYS" styleClass="detail-chip">
+                <VBox styleClass="detail-chip" HBox.hgrow="ALWAYS">
                     <Label styleClass="chip-label" text="Siguiente accion" />
                     <Label fx:id="lblSiguienteAccion" styleClass="chip-value warning-text" text="Confirmar tiempo estimado con cocina" />
                 </VBox>
@@ -173,11 +162,11 @@
             </VBox>
 
             <HBox spacing="10">
-                <VBox HBox.hgrow="ALWAYS" styleClass="detail-chip">
+                <VBox styleClass="detail-chip" HBox.hgrow="ALWAYS">
                     <Label styleClass="chip-label" text="Estado cocina" />
                     <Label fx:id="lblEstadoCocinaSeleccionado" styleClass="chip-value warning-text" text="En preparacion" />
                 </VBox>
-                <VBox HBox.hgrow="ALWAYS" styleClass="detail-chip">
+                <VBox styleClass="detail-chip" HBox.hgrow="ALWAYS">
                     <Label styleClass="chip-label" text="Espera" />
                     <Label fx:id="lblEsperaSeleccionada" styleClass="chip-value" text="11 min" />
                 </VBox>
@@ -201,14 +190,8 @@
             </TableView>
 
             <VBox spacing="10">
-                <Button fx:id="btnNotificarCliente"
-                        maxWidth="Infinity"
-                        styleClass="secondary-button"
-                        text="Notificar al cliente" />
-                <Button fx:id="btnMarcarServido"
-                        maxWidth="Infinity"
-                        styleClass="success-button"
-                        text="Marcar como servido" />
+                <Button fx:id="btnNotificarCliente" maxWidth="Infinity" onAction="#btnNotificarCliente" styleClass="secondary-button" text="Notificar al cliente" />
+                <Button fx:id="btnMarcarServido" maxWidth="Infinity" onAction="#btnMarcarServido" styleClass="success-button" text="Marcar como servido" />
             </VBox>
         </VBox>
     </right>
