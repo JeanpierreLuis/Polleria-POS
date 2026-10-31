@@ -307,6 +307,10 @@ public class OrdersController {
     void btnRegistrarPedido(ActionEvent event) {
     String nombreCliente = txtCliente.getText().trim();
 
+    if(nombreCliente.isBlank()){
+        nombreCliente = "Cliente General";
+    }
+
     String telefonoCliente = txtTelefono.getText().trim();
 
     Clientes cliente = clientesService.obtenerOCrearCliente(nombreCliente, telefonoCliente);
@@ -338,19 +342,24 @@ public class OrdersController {
                 .usuario(usuario)
                 .cliente(cliente)
                 .mesa(mesaSeleccionada)
-                .tipoPedido(tipoPedido).
-                total(totalPedido)
+                .tipoPedido(tipoPedido)
+                .total(totalPedido)
                 .fecha(LocalDateTime.now())
+                .estado(Pedidos.EstadoPedido.PENDIENTE)
                 .build();
 
         pedido = pedidosRepository.save(pedido);
-
-        System.out.println("Pedido guardado con ID: " + pedido.getId_pedido());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Pedido Registrado");
+        alert.setHeaderText(null);
+        alert.setContentText("Pedido enviado a cocina correctamente");
+        alert.showAndWait();
 
         for (DetallePedido detalle :  detallePedido) {
             detalle.setPedido(pedido);
             detallePedidoRepository.save(detalle);
         }
+        limpiarFormulario();
     }
 
     // ==========================
@@ -370,5 +379,18 @@ public class OrdersController {
                 .setScale(2, RoundingMode.HALF_UP);
 
         lblTotal.setText("S/ " + totalPedido);
+    }
+
+    private void limpiarFormulario(){
+        txtCliente.clear();
+        txtTelefono.clear();
+        cbMesa.getSelectionModel().clearSelection();
+        cbTipoPedido.getSelectionModel().getSelectedItem();
+
+        detallePedido.clear();
+        totalPedido = BigDecimal.ZERO;
+        lblTotal.setText("0.00");
+
+        tblDetalle.refresh();
     }
 }

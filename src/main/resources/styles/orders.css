@@ -39,17 +39,34 @@
 
 .text-field,
 .combo-box,
-.date-picker {
-    -fx-pref-height: 38;
+.date-picker,
+.text-area {
     -fx-background-color: #ffffff;
     -fx-background-radius: 7;
     -fx-border-color: #d1d5db;
     -fx-border-radius: 7;
+}
+
+.text-field,
+.combo-box,
+.date-picker {
+    -fx-pref-height: 38;
     -fx-padding: 0 10;
 }
 
+.text-area {
+    -fx-font-size: 13px;
+    -fx-padding: 4;
+}
+
+.text-area .content {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 5;
+}
+
 .text-field:focused,
-.combo-box:focused {
+.combo-box:focused,
+.text-area:focused {
     -fx-border-color: #2563eb;
     -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.16), 8, 0, 0, 0);
 }

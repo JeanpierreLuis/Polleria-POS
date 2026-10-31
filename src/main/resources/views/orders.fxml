@@ -7,6 +7,7 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -28,6 +29,8 @@
                 </VBox>
 
                 <Region HBox.hgrow="ALWAYS" />
+
+                <Button onAction="#btnIrWaiter" styleClass="secondary-button" text="Seguimiento de Pedidos" />
 
                 <VBox alignment="CENTER_RIGHT" spacing="2" styleClass="total-chip">
                     <Label styleClass="total-caption" text="Total actual" />
@@ -63,6 +66,11 @@
 
 
                 </HBox>
+
+                <VBox spacing="6">
+                    <Label styleClass="form-label" text="Notas del cliente" />
+                    <TextArea fx:id="txtNotas" prefRowCount="2" promptText="Preferencias, alergias u observaciones del cliente" wrapText="true" />
+                </VBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <TextField fx:id="txtBuscarProducto" prefHeight="26.0" prefWidth="684.0" promptText="Buscar producto por nombre..." HBox.hgrow="ALWAYS" />
